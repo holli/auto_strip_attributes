@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Olli Huotari"]
   s.email       = ["olli.huotari@iki.fi"]
   s.homepage    = "https://github.com/holli/auto_strip_attributes"
-  s.summary     = "Removes unnecessary whitespaces from ActiveRecord or ActiveModel attributes."
+  s.summary     = "Removes unnecessary whitespaces in attributes. Extension to ActiveRecord or ActiveModel."
   s.description = "AutoStripAttributes helps to remove unnecessary whitespaces from ActiveRecord or ActiveModel attributes. It's good for removing accidental spaces from user inputs. It works by adding a before_validation hook to the record. It has option to set empty strings to nil or to remove extra spaces inside the string."
 
   s.rubyforge_project = "auto_strip_attributes"
