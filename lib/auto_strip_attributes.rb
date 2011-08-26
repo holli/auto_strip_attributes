@@ -3,7 +3,7 @@ require "auto_strip_attributes/version"
 module AutoStripAttributes
 
   def auto_strip_attributes(*attributes)
-    options = {:nullify => true, :squeeze_spaces => false}
+    options = {:nullify => true, :squish => false}
     if attributes.last.is_a?(Hash)
       options = options.merge(attributes.pop)
     end
@@ -16,7 +16,7 @@ module AutoStripAttributes
           value_stripped = (options[:nullify] && value.blank?) ? nil : value.strip
 
           # gsub(/\s+/, ' ') is same as in Rails#String.squish http://api.rubyonrails.org/classes/String.html#method-i-squish-21
-          value_stripped = value_stripped.gsub(/\s+/, ' ') if options[:squeeze_spaces] && value_stripped.respond_to?(:gsub)
+          value_stripped = value_stripped.gsub(/\s+/, ' ') if options[:squish] && value_stripped.respond_to?(:gsub)
 
           record[attribute] = value_stripped
 

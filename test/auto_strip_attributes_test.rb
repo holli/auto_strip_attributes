@@ -71,7 +71,7 @@ describe AutoStripAttributes do
   describe "Attribute with squish option" do
     class MockRecordWithSqueeze < ActiveRecord::Base
       column :foo, :string
-      auto_strip_attributes :foo, :squeeze_spaces => true
+      auto_strip_attributes :foo, :squish => true
     end
 
     it "should squish string also form inside" do
@@ -96,7 +96,7 @@ describe AutoStripAttributes do
       column :biz, :string
       column :bang, :integer
       auto_strip_attributes :foo, :bar
-      auto_strip_attributes :biz, {:nullify => false, :squeeze_spaces => true}
+      auto_strip_attributes :biz, {:nullify => false, :squish => true}
     end
 
     it "should handle everything ok" do
