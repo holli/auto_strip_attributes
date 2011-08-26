@@ -32,7 +32,7 @@ end
 ## Similar gems
 
 There are many similar gems. Most of those don't have :squeeze_spaces or :nullify options. Those gems
-might have some extra methods.
+might have some extra methods whereas this gem is kept as simple as possible.
 
 - https://github.com/phatworx/acts_as_strip
 - https://github.com/rmm5t/strip_attributes

@@ -74,11 +74,18 @@ describe AutoStripAttributes do
       auto_strip_attributes :foo, :squeeze_spaces => true
     end
 
-    it "should squish item" do
+    it "should squish string also form inside" do
       @record = MockRecordWithSqueeze.new
-      @record.foo = "  aaa\t\t     bbb"
+      @record.foo = "  aaa\t\n     bbb"
       @record.valid?
       @record.foo.must_equal "aaa bbb"
+    end
+
+    it "should do normal nullify with empty string" do
+      @record = MockRecordWithSqueeze.new
+      @record.foo = "  "
+      @record.valid?
+      @record.foo.must_be_nil
     end
   end
 
