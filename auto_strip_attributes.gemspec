@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "activerecord", "~> 3.0"
   s.add_development_dependency "minitest",  "~> 2.5.0"
-  s.add_development_dependency 'ruby-debug'
+  s.add_development_dependency "mocha", "~> 0.9.12"
+  #s.add_development_dependency 'ruby-debug'
   s.add_development_dependency 'rake'
 end

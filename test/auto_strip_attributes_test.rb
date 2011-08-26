@@ -1,4 +1,4 @@
-require "test/test_helper"
+require "test_helper"
 # bundle exec ruby test/auto_strip_attributes_test.rb -v --name /test_name/
 
 #class AutoStripAttributesTest < Test::Unit::TestCase
@@ -18,33 +18,40 @@ describe AutoStripAttributes do
       column :foo, :string
       auto_strip_attributes :foo
     end
-    before do
-      @record = MockRecordBasic.new()
-    end
 
     it "should be ok for normal strings" do
+      @record = MockRecordBasic.new()
       @record.foo = " aaa \t"
       @record.valid?
       @record.foo.must_equal "aaa"
     end
 
     it "should set empty strings to nil" do
+      @record = MockRecordBasic.new()
       @record.foo = " "
       @record.valid?
       @record.foo.must_be_nil
     end
 
     it "should call strip method to attribute if possible" do
-      str_mock = MiniTest::Mock.new()
-      str_mock.expect :'nil?', false
-      str_mock.expect :strip, (@stripped_str="stripped_str_here")
+      @record = MockRecordBasic.new()
+      str_mock = "  strippable_str  "
+      str_mock.expects(:strip).returns(@stripped_str="stripped_str_here")
       @record.foo = str_mock
       @record.valid?
-      str_mock.verify
+      assert true
       @record.foo.must_be_same_as @stripped_str
+
+      #str_mock.expect :'nil?', false
+      #str_mock.expect :strip, (@stripped_str="stripped_str_here")
+      #@record.foo = str_mock
+      #@record.valid?
+      #str_mock.verify
+      #@record.foo.must_be_same_as @stripped_str
     end
 
     it "should not call strip method for non strippable attributes" do
+      @record = MockRecordBasic.new()
       str_mock = MiniTest::Mock.new() # answers false to str_mock.respond_to?(:strip)
       str_mock.expect :'nil?', false
       @record.foo = str_mock

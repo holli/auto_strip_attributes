@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require "active_record"
 require "auto_strip_attributes"
 #require 'ruby-debug'
+require 'mocha'
 
 class ActiveRecord::Base
   alias_method :save, :valid?
