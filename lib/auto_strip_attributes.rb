@@ -15,8 +15,9 @@ module AutoStripAttributes
         if value.respond_to?(:strip)
           value_stripped = (options[:nullify] && value.blank?) ? nil : value.strip
 
+          # gsub(/\s+/, ' ') is same as in Rails#String.squish http://api.rubyonrails.org/classes/String.html#method-i-squish-21
           value_stripped = value_stripped.gsub(/\s+/, ' ') if options[:squeeze_spaces] && value.respond_to?(:gsub)
-          
+
           record[attribute] = value_stripped
 
           # Alternate way would be to use send(attribute=)
