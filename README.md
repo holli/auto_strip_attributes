@@ -29,6 +29,10 @@ class User < ActiveRecord::Base
 end
 ```
 
+# Support
+
+Submit suggestions or feature requests as a GitHub Issue or Pull Request. Remember to update tests. Tests are quite extensive.
+
 ## Similar gems
 
 There are many similar gems. Most of those don't have :squish or :nullify options. Those gems
@@ -37,10 +41,6 @@ might have some extra methods whereas this gem is kept as simple as possible.
 - https://github.com/phatworx/acts_as_strip
 - https://github.com/rmm5t/strip_attributes
 - https://github.com/thomasfedb/attr_cleaner
-
-# Support
-
-Submit suggestions or feature requests as a GitHub Issue or Pull Request. Remember to update tests. Tests are quite extensive.
 
 # Licence
 
