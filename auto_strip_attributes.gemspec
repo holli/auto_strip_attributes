@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.version     = AutoStripAttributes::VERSION
   s.authors     = ["Olli Huotari"]
   s.email       = ["olli.huotari@iki.fi"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "https://github.com/holli/auto_strip_attributes"
+  s.summary     = "Removes unnecessary whitespaces from ActiveRecord or ActiveModel attributes."
+  s.description = "AutoStripAttributes helps to remove unnecessary whitespaces from ActiveRecord or ActiveModel attributes. It's good for removing accidental spaces from user inputs. It works by adding a before_validation hook to the record. It has option to set empty strings to nil or to remove extra spaces inside the string."
 
   s.rubyforge_project = "auto_strip_attributes"
 
@@ -18,7 +18,11 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
-  # s.add_runtime_dependency "rest-client"
+
+  s.add_runtime_dependency "activemodel", "~> 3.0"
+
+  s.add_development_dependency "activerecord", "~> 3.0"
+  s.add_development_dependency "minitest",  "~> 2.5.0"
+  s.add_development_dependency 'ruby-debug'
+  s.add_development_dependency 'rake'
 end

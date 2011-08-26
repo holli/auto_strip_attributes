@@ -2,3 +2,8 @@
 .bundle
 Gemfile.lock
 pkg/*
+
+.loadpath
+.project
+.idea
+.redcar
