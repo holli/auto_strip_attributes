@@ -29,6 +29,10 @@ class User < ActiveRecord::Base
 end
 ```
 
+# Requirements
+
+Gem has been tested with ruby 1.8.7, 1.9.2 and Rails 3.x. Although it should also work with previous versions of rails.
+
 # Support
 
 Submit suggestions or feature requests as a GitHub Issue or Pull Request. Remember to update tests. Tests are quite extensive.
@@ -41,6 +45,7 @@ might have some extra methods whereas this gem is kept as simple as possible.
 - https://github.com/phatworx/acts_as_strip
 - https://github.com/rmm5t/strip_attributes
 - https://github.com/thomasfedb/attr_cleaner
+- https://github.com/mdeering/attribute_normalizer (Bit hardcore approach, more features and more complex)
 
 # Licence
 
