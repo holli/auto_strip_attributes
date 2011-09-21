@@ -32,6 +32,6 @@ module AutoStripAttributes
 
 end
 
-#ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
-ActiveModel::Validations::HelperMethods.send(:include, AutoStripAttributes) if defined? ActiveRecord
+ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
+#ActiveModel::Validations::HelperMethods.send(:include, AutoStripAttributes) if defined? ActiveRecord
 
