@@ -1,4 +1,11 @@
-require "test/test_helper"
+require 'minitest/autorun'
+require "active_record"
+require "auto_strip_attributes"
+#require 'ruby-debug'
+require 'mocha'
+
+
+#require "test/test_helper"
 # bundle exec ruby test/auto_strip_attributes_test.rb -v --name /test_name/
 
 #class AutoStripAttributesTest < Test::Unit::TestCase
