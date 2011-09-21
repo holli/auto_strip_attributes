@@ -33,14 +33,25 @@ end
 
 Gem has been tested with ruby 1.8.7, 1.9.2 and Rails 3.x. Although it should also work with previous versions of rails.
 
+http://travis-ci.org/#!/holli/auto_strip_attributes
+
 # Support
 
 Submit suggestions or feature requests as a GitHub Issue or Pull Request. Remember to update tests. Tests are quite extensive.
 
+# Other approaches
+
+This gem works by addin before_validation hook and setting attributes with self[attribute]=stripped_value. See: https://github.com/holli/auto_strip_attributes/blob/master/lib/auto_strip_attributes.rb
+
+Other approaches could include calling attribute= from before_validation. This would end up calling possible custom setters twice. Might not be desired effect (e.g. if setter does some logging).
+
+Method chaining attribute= can be also used. But then stripping would be omitted if there is some code that calls model[attribute]= directly. This could happen easily when using hashes in some places.
+
 ## Similar gems
 
 There are many similar gems. Most of those don't have :squish or :nullify options. Those gems
-might have some extra methods whereas this gem is kept as simple as possible.
+might have some extra methods whereas this gem is kept as simple as possible. These gems have a bit
+different approaches. See discussion in previous chapter.
 
 - https://github.com/phatworx/acts_as_strip
 - https://github.com/rmm5t/strip_attributes
