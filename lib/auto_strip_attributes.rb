@@ -10,8 +10,8 @@ module AutoStripAttributes
 
     attributes.each do |attribute|
       before_validation do |record|
-        value = record.send(attribute)
-        #if value.respond_to?('strip')
+        #value = record.send(attribute)
+        value = record[attribute]
         if value.respond_to?(:strip)
           value_stripped = (options[:nullify] && value.blank?) ? nil : value.strip
 

@@ -21,6 +21,11 @@ class MockRecordParent
     # send("#{key}=", val)  # We dont want to call setter again
     instance_variable_set(:"@#{key}", val)
   end
+
+  def [](key)
+    instance_variable_get(:"@#{key}")
+  end
+
 end
 
 describe AutoStripAttributes do
