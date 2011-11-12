@@ -28,9 +28,9 @@ class AutoStripAttributes::Config
   end
 
   def self.setup(&block)
-    @filters = {}
-    @filters_enabled = {}
-    @filters_order = []
+    @filters ||= {}
+    @filters_enabled ||= {}
+    @filters_order ||= []
 
     instance_eval &block
   end
@@ -45,7 +45,8 @@ class AutoStripAttributes::Config
     end
     @filters[filter_name] = block
     @filters_enabled[filter_name] = filter_enabled
-    @filters_order << filter_name
+    # in case filter is redefined, we probably don't want to change the order
+    @filters_order << filter_name unless @filters_order.include? filter_name
   end
 end
 
