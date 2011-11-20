@@ -56,7 +56,10 @@ AutoStripAttributes::Config.setup do
     value.respond_to?(:strip) ? value.strip : value
   end
   set_filter :nullify => true do |value|
-    value.blank? ? nil : value
+    #test fail in ruby 1.9 when value is set to MiniTest::Mock.new(), it responds to blank? but doesn't respond to !
+    #rails blank? method returns !self if an object doesn't respond to :empty?, so we make sure value has ! method
+    #defined before calling blank?
+    (value.respond_to?('!') and value.blank?) ? nil : value
   end
   set_filter :squish => false do |value|
     value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
