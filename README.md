@@ -41,9 +41,11 @@ By default the following filters are defined (listed in the order of processing)
 ## Custom Filters
 
 New version of this gem supports custom filtering methods. Custom methods can be set by calling to set_filter method
-inside a block passed to AutoStripAttributes::Config.setup. Method should return processed value
+inside a block passed to AutoStripAttributes::Config.setup. set_filter method accepts either Symbol or Hash as a
+parameter. If parameter is a Hash, the key should be filter name and the value is boolean whether filter is enabled by
+default or not. Block should return processed value.
 
-This is an example how to add html tags stripping in Rails
+This is an example on how to add html tags stripping in Rails
 
 ```ruby
 AutoStripAttributes::Config.setup do
