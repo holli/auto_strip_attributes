@@ -35,7 +35,7 @@ class AutoStripAttributes::Config
     @filters_enabled ||= {}
     @filters_order ||= []
 
-    instance_eval &block
+    instance_eval &block if block_given?
   end
 
   def self.set_filter(filter,&block)
