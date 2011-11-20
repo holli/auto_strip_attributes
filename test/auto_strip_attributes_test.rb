@@ -166,5 +166,73 @@ describe AutoStripAttributes do
     end
   end
 
+  describe "Configuration tests" do
+    it "should have defined AutoStripAttributes::Config" do
+      assert AutoStripAttributes.const_defined?(:Config)
+    end
+
+    it "should have default filters set in right order" do
+      AutoStripAttributes::Config.setup :clear => true
+      filters_order = AutoStripAttributes::Config.filters_order
+      filters_order.must_equal [:strip, :nullify, :squish]
+    end
+
+    it "should reset filters to defaults when :clear is true" do
+      AutoStripAttributes::Config.setup do
+        set_filter :test do
+          'test'
+        end
+      end
+      AutoStripAttributes::Config.setup :clear => true
+      filters_order = AutoStripAttributes::Config.filters_order
+      filters_order.must_equal [:strip, :nullify, :squish]
+    end
+
+    it "should remove all filters when :clear is true and :defaults is false" do
+      AutoStripAttributes::Config.setup do
+        set_filter :test do
+          'test'
+        end
+      end
+      AutoStripAttributes::Config.setup :clear => true, :defaults => false
+      filter_order = AutoStripAttributes::Config.filters_order
+      filter_order.must_equal []
+
+      # returning to original state
+      AutoStripAttributes::Config.setup :clear => true
+    end
+
+    it "should correctly define and process custom filters" do
+      class MockRecordWithCustomFilter < MockRecordParent #< ActiveRecord::Base
+        attr_accessor :foo
+        auto_strip_attributes :foo
+      end
+
+      AutoStripAttributes::Config.setup do
+        set_filter :test => true do |value|
+          value.downcase
+        end
+      end
+
+      filters_block = AutoStripAttributes::Config.filters
+      filters_order = AutoStripAttributes::Config.filters_order
+      filters_enabled = AutoStripAttributes::Config.filters_enabled
+
+      filters_order.must_equal [:strip, :nullify, :squish, :test]
+      assert Proc === filters_block[:test]
+      filters_enabled[:test].must_equal true
+
+      @record = MockRecordWithCustomFilter.new
+      @record.foo = " FOO "
+      @record.valid?
+      @record.foo.must_equal "foo"
+
+      # returning to original state
+      AutoStripAttributes::Config.setup :clear => true
+    end
+
+
+  end
+
 
 end
