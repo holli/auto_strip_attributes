@@ -27,13 +27,33 @@ class AutoStripAttributes::Config
     attr_accessor :filters_order
   end
 
-  def self.setup(reset_filters=false,&block)
-    if reset_filters
-      @filters, @filters_enabled, @filters_order = {}, {}, []
-    end
+  def self.setup(user_options=nil,&block)
+    options = {
+        :clear => false,
+        :defaults => true,
+    }
+    options = options.merge user_options if user_options.is_a?(Hash)
+
+    @filters, @filters_enabled, @filters_order = {}, {}, [] if options[:clear]
+
     @filters ||= {}
     @filters_enabled ||= {}
     @filters_order ||= []
+
+    if options[:defaults]
+      set_filter :strip => true do |value|
+        value.respond_to?(:strip) ? value.strip : value
+      end
+      set_filter :nullify => true do |value|
+        #test fail in ruby 1.9 when value is set to MiniTest::Mock.new(), it responds to blank? but doesn't respond to !
+        #rails blank? method returns !self if an object doesn't respond to :empty?, so we make sure value has ! method
+        #defined before calling blank?
+        (value.respond_to?('!') and value.blank?) ? nil : value
+      end
+      set_filter :squish => false do |value|
+        value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
+      end
+    end
 
     instance_eval &block if block_given?
   end
@@ -54,19 +74,6 @@ class AutoStripAttributes::Config
 end
 
 ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
-AutoStripAttributes::Config.setup do
-  set_filter :strip => true do |value|
-    value.respond_to?(:strip) ? value.strip : value
-  end
-  set_filter :nullify => true do |value|
-    #test fail in ruby 1.9 when value is set to MiniTest::Mock.new(), it responds to blank? but doesn't respond to !
-    #rails blank? method returns !self if an object doesn't respond to :empty?, so we make sure value has ! method
-    #defined before calling blank?
-    (value.respond_to?('!') and value.blank?) ? nil : value
-  end
-  set_filter :squish => false do |value|
-    value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
-  end
-end
+AutoStripAttributes::Config.setup
 #ActiveModel::Validations::HelperMethods.send(:include, AutoStripAttributes) if defined? ActiveRecord
 
