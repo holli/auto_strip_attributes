@@ -27,7 +27,10 @@ class AutoStripAttributes::Config
     attr_accessor :filters_order
   end
 
-  def self.setup(&block)
+  def self.setup(reset_filters=false,&block)
+    if reset_filters
+      @filters, @filters_enabled, @filters_order = {}, {}, []
+    end
     @filters ||= {}
     @filters_enabled ||= {}
     @filters_order ||= []
