@@ -1,5 +1,3 @@
-+{<img src="https://secure.travis-ci.org/geemus/excon.png" />}[http://travis-ci.org/geemus/excon]
-
 # AutoStripAttributes
 
 AutoStripAttributes helps to remove unnecessary whitespaces from ActiveRecord or ActiveModel attributes.
@@ -9,7 +7,7 @@ It works by adding a before_validation hook to the record. No other methods are 
 
 Gem has option to set empty strings to nil or to remove extra spaces inside the string.
 
-+{<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />}[http://travis-ci.org/holli/auto_strip_attributes]
+(<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />)[http://travis-ci.org/holli/auto_strip_attributes]
 
 ## Howto / examples
 
@@ -99,7 +97,7 @@ AutoStripAttributes::Config.setup accepts following options
 
 Gem has been tested with ruby 1.8.7, 1.9.2 and Rails 3.x. Although it should also work with previous versions of rails.
 
-+{<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />}[http://travis-ci.org/holli/auto_strip_attributes]
+(<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />)[http://travis-ci.org/holli/auto_strip_attributes]
 
 http://travis-ci.org/#!/holli/auto_strip_attributes
 
