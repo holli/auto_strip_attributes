@@ -1,15 +1,14 @@
+#to use:
+#require "test/test_helper"
+#bundle exec ruby test/auto_strip_attributes_test.rb -v --name /test_name/
+
 require 'minitest/autorun'
+require 'minitest/spec'
 require "active_record"
 require "auto_strip_attributes"
-#require 'ruby-debug'
 require 'mocha'
+#require 'ruby-debug'
 
-
-#require "test/test_helper"
-# bundle exec ruby test/auto_strip_attributes_test.rb -v --name /test_name/
-
-#class AutoStripAttributesTest < Test::Unit::TestCase
-#class AutoStripAttributesTest < MiniTest::Unit::TestCase
 
 class MockRecordParent
   include ActiveModel::Validations
@@ -75,9 +74,15 @@ describe AutoStripAttributes do
       #@record.foo.must_be_same_as @stripped_str
     end
 
-    it "should not call strip method for non strippable attributes" do
+    it "should not call strip or nullify method for non strippable attributes" do
       @record = MockRecordBasic.new()
-      str_mock = MiniTest::Mock.new() # answers false to str_mock.respond_to?(:strip)
+
+      str_mock = MiniTest::Mock.new() # answers false to str_mock.respond_to?(:strip) and respond_to?(:blank)
+      # Mock.new is problematic in ruby 1.9 because it responds to blank? but doesn't respond to !
+      # rails blank? method returns !self if an object doesn't respond to :empty?
+      # Now we check in the validator also for :empty? so !self is never called.
+      # Other way could be to mock !self in here
+
       @record.foo = str_mock
       @record.valid?
       assert @record.foo === str_mock
@@ -103,7 +108,7 @@ describe AutoStripAttributes do
 
   describe "Attribute with squish option" do
     class MockRecordWithSqueeze < MockRecordParent #< ActiveRecord::Base
-      #column :foo, :string
+      #column :foo, :st
       attr_accessor :foo
       auto_strip_attributes :foo, :squish => true
     end
@@ -231,7 +236,45 @@ describe AutoStripAttributes do
       AutoStripAttributes::Config.setup :clear => true
     end
 
+  end
 
+  describe "complex usecase with custom config" do
+    class ComplexFirstMockRecord < MockRecordParent
+      #column :foo, :string
+      attr_accessor :foo, :bar_downcase
+      auto_strip_attributes :foo
+      auto_strip_attributes :bar_downcase, :downcase => true
+    end
+
+    # before will not work currently: https://github.com/seattlerb/minitest/issues/50 using def setup
+    #before do
+    #end
+
+    def setup
+      AutoStripAttributes::Config.setup do
+        set_filter :downcase => false do |value|
+          value.downcase if value.respond_to?(:downcase)
+        end
+      end
+    end
+
+    def teardown
+      AutoStripAttributes::Config.setup :defaults => true
+    end
+
+    it "should not use extra filters when not in setup" do
+      @record = ComplexFirstMockRecord.new
+      @record.foo = " FOO "
+      @record.valid?
+      @record.foo.must_equal "FOO"
+    end
+    
+    it "should use extra filters when given" do
+      @record = ComplexFirstMockRecord.new
+      @record.bar_downcase = " BAR "
+      @record.valid?
+      @record.bar_downcase.must_equal "bar"
+    end
   end
 
 

@@ -9,6 +9,7 @@ module AutoStripAttributes
 
     attributes.each do |attribute|
       before_validation do |record|
+        #debugger
         value = record[attribute]
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next unless options[filter_name]
@@ -45,10 +46,10 @@ class AutoStripAttributes::Config
         value.respond_to?(:strip) ? value.strip : value
       end
       set_filter :nullify => true do |value|
-        #test fail in ruby 1.9 when value is set to MiniTest::Mock.new(), it responds to blank? but doesn't respond to !
-        #rails blank? method returns !self if an object doesn't respond to :empty?, so we make sure value has ! method
-        #defined before calling blank?
-        (value.respond_to?('!') and value.blank?) ? nil : value
+        # We check for blank? and empty? because rails uses empty? inside blank?
+        # e.g. MiniTest::Mock.new() only responds to .blank? but not empty?, check tests for more info
+        # Basically same as value.blank? ? nil : value
+        (value.respond_to?(:'blank?') and value.respond_to?(:'empty?') and value.blank?) ? nil : value
       end
       set_filter :squish => false do |value|
         value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
