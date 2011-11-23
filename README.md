@@ -1,3 +1,5 @@
++{<img src="https://secure.travis-ci.org/geemus/excon.png" />}[http://travis-ci.org/geemus/excon]
+
 # AutoStripAttributes
 
 AutoStripAttributes helps to remove unnecessary whitespaces from ActiveRecord or ActiveModel attributes.
@@ -6,6 +8,8 @@ It's good for removing accidental spaces from user inputs (e.g. when user copy/p
 It works by adding a before_validation hook to the record. No other methods are added. Gem is kept as simple as possible.
 
 Gem has option to set empty strings to nil or to remove extra spaces inside the string.
+
++{<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />}[http://travis-ci.org/holli/auto_strip_attributes]
 
 ## Howto / examples
 
@@ -30,7 +34,7 @@ end
 ```
 
 # Filters
-## Default filters
+### Default filters
 
 By default the following filters are defined (listed in the order of processing):
 
@@ -38,7 +42,7 @@ By default the following filters are defined (listed in the order of processing)
 - :nullify (enabled by default) - replaces empty strings with nil
 - :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
 
-## Custom Filters
+### Custom Filters
 
 New version of this gem supports custom filtering methods. Custom methods can be set by calling to set_filter method
 inside a block passed to AutoStripAttributes::Config.setup. set_filter method accepts either Symbol or Hash as a
@@ -48,11 +52,22 @@ default or not. Block should return processed value.
 This is an example on how to add html tags stripping in Rails
 
 ```ruby
+
+E.g. inside config/initializers/auto_strip_attributes.rb
+
 AutoStripAttributes::Config.setup do
-  set_filter :strip_html => true do |value|
+  set_filter :strip_html => false do |value|
     ActionController::Base.helpers.strip_tags value
   end
 end
+
+
+And in the model:
+
+class User < ActiveRecord::Base
+  auto_strip_attributes :extra_info, :strip_html => true
+end
+
 ```
 
 Change the order of filters is done by manipulating filters_order array. You may also enable or disable filter by
@@ -74,9 +89,17 @@ AutoStripAttributes::Config.setup accepts following options
 - :defaults => true, to set three default filters mentioned above
 
 
+# Versions
+
+- 1.x : Had only basic filters
+- 2.x : Includes config for extra filters (thnks [@dadittoz](https://github.com/holli/auto_strip_attributes/issues/1)
+
+
 # Requirements
 
 Gem has been tested with ruby 1.8.7, 1.9.2 and Rails 3.x. Although it should also work with previous versions of rails.
+
++{<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />}[http://travis-ci.org/holli/auto_strip_attributes]
 
 http://travis-ci.org/#!/holli/auto_strip_attributes
 
@@ -92,7 +115,7 @@ Other approaches could include calling attribute= from before_validation. This w
 
 Method chaining attribute= can be also used. But then stripping would be omitted if there is some code that calls model[attribute]= directly. This could happen easily when using hashes in some places.
 
-## Similar gems
+### Similar gems
 
 There are many similar gems. Most of those don't have :squish or :nullify options. Those gems
 might have some extra methods whereas this gem is kept as simple as possible. These gems have a bit

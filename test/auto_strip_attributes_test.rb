@@ -243,7 +243,7 @@ describe AutoStripAttributes do
       #column :foo, :string
       attr_accessor :foo, :bar_downcase
       auto_strip_attributes :foo
-      auto_strip_attributes :bar_downcase, :downcase => true
+      auto_strip_attributes :bar_downcase, :downcase => true, :nullify => false
     end
 
     # before will not work currently: https://github.com/seattlerb/minitest/issues/50 using def setup
@@ -274,6 +274,13 @@ describe AutoStripAttributes do
       @record.bar_downcase = " BAR "
       @record.valid?
       @record.bar_downcase.must_equal "bar"
+    end
+
+    it "should use extra filters when given and also respect given other configs" do
+      @record = ComplexFirstMockRecord.new
+      @record.bar_downcase = "    "
+      @record.valid?
+      @record.bar_downcase.must_equal ""
     end
   end
 
