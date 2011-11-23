@@ -29,6 +29,51 @@ class User < ActiveRecord::Base
 end
 ```
 
+# Filters
+## Default filters
+
+By default the following filters are defined (listed in the order of processing):
+
+- :strip (enabled by default) - removes whitespaces from the beginning and the end of string
+- :nullify (enabled by default) - replaces empty strings with nil
+- :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
+
+## Custom Filters
+
+New version of this gem supports custom filtering methods. Custom methods can be set by calling to set_filter method
+inside a block passed to AutoStripAttributes::Config.setup. set_filter method accepts either Symbol or Hash as a
+parameter. If parameter is a Hash, the key should be filter name and the value is boolean whether filter is enabled by
+default or not. Block should return processed value.
+
+This is an example on how to add html tags stripping in Rails
+
+```ruby
+AutoStripAttributes::Config.setup do
+  set_filter :strip_html => true do |value|
+    ActionController::Base.helpers.strip_tags value
+  end
+end
+```
+
+Change the order of filters is done by manipulating filters_order array. You may also enable or disable filter by
+default by changing filters_enabled hash.
+
+Example of making :strip_html filter first and enabling :squish by default
+
+```ruby
+AutoStripAttributes::Config.setup do
+  filters_order.delete(:strip_html)
+  filters_order.insert(0, :strip_html)
+  filters_enabled[:squish] = true
+end
+```
+
+AutoStripAttributes::Config.setup accepts following options
+
+- :clear => true, to clear all filters
+- :defaults => true, to set three default filters mentioned above
+
+
 # Requirements
 
 Gem has been tested with ruby 1.8.7, 1.9.2 and Rails 3.x. Although it should also work with previous versions of rails.
@@ -41,7 +86,7 @@ Submit suggestions or feature requests as a GitHub Issue or Pull Request. Rememb
 
 # Other approaches
 
-This gem works by addin before_validation hook and setting attributes with self[attribute]=stripped_value. See: https://github.com/holli/auto_strip_attributes/blob/master/lib/auto_strip_attributes.rb
+This gem works by adding before_validation hook and setting attributes with self[attribute]=stripped_value. See: https://github.com/holli/auto_strip_attributes/blob/master/lib/auto_strip_attributes.rb
 
 Other approaches could include calling attribute= from before_validation. This would end up calling possible custom setters twice. Might not be desired effect (e.g. if setter does some logging).
 

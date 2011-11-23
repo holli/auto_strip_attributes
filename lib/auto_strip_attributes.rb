@@ -1,37 +1,79 @@
 require "auto_strip_attributes/version"
 
 module AutoStripAttributes
-
   def auto_strip_attributes(*attributes)
-    options = {:nullify => true, :squish => false}
+    options = AutoStripAttributes::Config.filters_enabled
     if attributes.last.is_a?(Hash)
       options = options.merge(attributes.pop)
     end
 
     attributes.each do |attribute|
       before_validation do |record|
-        #value = record.send(attribute)
         value = record[attribute]
-        if value.respond_to?(:strip)
-          value_stripped = (options[:nullify] && value.blank?) ? nil : value.strip
-
-          # gsub(/\s+/, ' ') is same as in Rails#String.squish http://api.rubyonrails.org/classes/String.html#method-i-squish-21
-          value_stripped = value_stripped.gsub(/\s+/, ' ') if options[:squish] && value_stripped.respond_to?(:gsub)
-
-          record[attribute] = value_stripped
-
-          # Alternate way would be to use send(attribute=)
-          # But that would end up calling =-method twice, once when setting, once in before_validate
-          # if (attr != attr_stripped)
-          #   record.send("#{attribute}=", value_stripped) # does add some overhead, attribute= will be called before each validation
-          # end
+        AutoStripAttributes::Config.filters_order.each do |filter_name|
+          next unless options[filter_name]
+          value = AutoStripAttributes::Config.filters[filter_name].call value
+          record[attribute] = value
         end
       end
     end
   end
+end
 
+class AutoStripAttributes::Config
+  class << self
+    attr_accessor :filters
+    attr_accessor :filters_enabled
+    attr_accessor :filters_order
+  end
+
+  def self.setup(user_options=nil,&block)
+    options = {
+        :clear => false,
+        :defaults => true,
+    }
+    options = options.merge user_options if user_options.is_a?(Hash)
+
+    @filters, @filters_enabled, @filters_order = {}, {}, [] if options[:clear]
+
+    @filters ||= {}
+    @filters_enabled ||= {}
+    @filters_order ||= []
+
+    if options[:defaults]
+      set_filter :strip => true do |value|
+        value.respond_to?(:strip) ? value.strip : value
+      end
+      set_filter :nullify => true do |value|
+        #test fail in ruby 1.9 when value is set to MiniTest::Mock.new(), it responds to blank? but doesn't respond to !
+        #rails blank? method returns !self if an object doesn't respond to :empty?, so we make sure value has ! method
+        #defined before calling blank?
+        (value.respond_to?('!') and value.blank?) ? nil : value
+      end
+      set_filter :squish => false do |value|
+        value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
+      end
+    end
+
+    instance_eval &block if block_given?
+  end
+
+  def self.set_filter(filter,&block)
+    if filter.is_a?(Hash) then
+      filter_name = filter.keys.first
+      filter_enabled = filter.values.first
+    else
+      filter_name = filter
+      filter_enabled = false
+    end
+    @filters[filter_name] = block
+    @filters_enabled[filter_name] = filter_enabled
+    # in case filter is redefined, we probably don't want to change the order
+    @filters_order << filter_name unless @filters_order.include? filter_name
+  end
 end
 
 ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
+AutoStripAttributes::Config.setup
 #ActiveModel::Validations::HelperMethods.send(:include, AutoStripAttributes) if defined? ActiveRecord
 
