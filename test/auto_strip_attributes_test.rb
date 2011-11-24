@@ -1,13 +1,18 @@
-#to use:
-#require "test/test_helper"
-#bundle exec ruby test/auto_strip_attributes_test.rb -v --name /test_name/
+# to use:
+# require "test/test_helper"
+# bundle exec ruby test/auto_strip_attributes_test.rb -v --name /test_name/
 
 require 'minitest/autorun'
 require 'minitest/spec'
 require "active_record"
 require "auto_strip_attributes"
 require 'mocha'
-#require 'ruby-debug'
+
+# if you need debug, add relevant line to auto_strip_attributes.gemspec
+# s.add_development_dependency 'ruby-debug'
+# s.add_development_dependency 'ruby-debug19'
+# and uncomment following line
+# require 'ruby-debug'
 
 
 class MockRecordParent
