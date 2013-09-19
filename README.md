@@ -39,6 +39,7 @@ By default the following filters are defined (listed in the order of processing)
 - :strip (enabled by default) - removes whitespaces from the beginning and the end of string
 - :nullify (enabled by default) - replaces empty strings with nil
 - :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
+- :delete (disabled by default) - delete all whitespaces (including tabs)
 
 ### Custom Filters
 
