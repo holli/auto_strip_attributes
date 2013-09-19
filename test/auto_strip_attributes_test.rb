@@ -133,6 +133,21 @@ describe AutoStripAttributes do
     end
   end
 
+  describe "Attribute with delete option" do
+    class MockRecordWithDelete < MockRecordParent
+      #column :foo, :string
+      attr_accessor :foo
+      auto_strip_attributes :foo, :delete => true
+    end
+
+    it "should delete all spaces and tabs" do
+      @record = MockRecordWithDelete.new
+      @record.foo = " a \t  bbb"
+      @record.valid?
+      @record.foo.must_equal "abbb"
+    end
+  end
+
   describe "Multible attributes with multiple options" do
     class MockRecordWithMultipleAttributes < MockRecordParent #< ActiveRecord::Base
       #column :foo, :string
@@ -184,7 +199,7 @@ describe AutoStripAttributes do
     it "should have default filters set in right order" do
       AutoStripAttributes::Config.setup :clear => true
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:strip, :nullify, :squish]
+      filters_order.must_equal [:strip, :nullify, :squish, :delete]
     end
 
     it "should reset filters to defaults when :clear is true" do
@@ -195,7 +210,7 @@ describe AutoStripAttributes do
       end
       AutoStripAttributes::Config.setup :clear => true
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:strip, :nullify, :squish]
+      filters_order.must_equal [:strip, :nullify, :squish, :delete]
     end
 
     it "should remove all filters when :clear is true and :defaults is false" do
@@ -228,7 +243,7 @@ describe AutoStripAttributes do
       filters_order = AutoStripAttributes::Config.filters_order
       filters_enabled = AutoStripAttributes::Config.filters_enabled
 
-      filters_order.must_equal [:strip, :nullify, :squish, :test]
+      filters_order.must_equal [:strip, :nullify, :squish, :delete, :test]
       assert Proc === filters_block[:test]
       filters_enabled[:test].must_equal true
 
