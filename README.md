@@ -14,7 +14,7 @@ Gem has option to set empty strings to nil or to remove extra spaces inside the 
 Include gem in your Gemfile:
 
 ```ruby
-gem "auto_strip_attributes", "~> 1.0"
+gem "auto_strip_attributes", "~> 2.0"
 ```
 
 ```ruby
