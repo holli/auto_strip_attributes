@@ -39,11 +39,11 @@ By default the following filters are defined (listed in the order of processing)
 - :strip (enabled by default) - removes whitespaces from the beginning and the end of string
 - :nullify (enabled by default) - replaces empty strings with nil
 - :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
-- :delete (disabled by default) - delete all whitespaces (including tabs)
+- :delete_whitespaces (disabled by default) - delete all whitespaces (including tabs)
 
 ### Custom Filters
 
-New version of this gem supports custom filtering methods. Custom methods can be set by calling to set_filter method
+Gem supports custom filtering methods. Custom methods can be set by calling to set_filter method
 inside a block passed to AutoStripAttributes::Config.setup. set_filter method accepts either Symbol or Hash as a
 parameter. If parameter is a Hash, the key should be filter name and the value is boolean whether filter is enabled by
 default or not. Block should return processed value.

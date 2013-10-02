@@ -54,7 +54,7 @@ class AutoStripAttributes::Config
       set_filter :squish => false do |value|
         value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
       end
-      set_filter :delete => false do |value|
+      set_filter :delete_whitespaces => false do |value|
         value.respond_to?(:delete) ? value.delete(" \t") : value
       end
     end
