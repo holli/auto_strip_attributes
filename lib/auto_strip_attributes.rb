@@ -9,7 +9,6 @@ module AutoStripAttributes
 
     attributes.each do |attribute|
       before_validation do |record|
-        #debugger
         value = record[attribute]
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next unless options[filter_name]
