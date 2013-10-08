@@ -12,7 +12,7 @@ module AutoStripAttributes
         value = record[attribute]
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next unless options[filter_name]
-          value = AutoStripAttributes::Config.filters[filter_name].call value
+          value = AutoStripAttributes::Config.filters[filter_name].call(value)
           record[attribute] = value
         end
       end
