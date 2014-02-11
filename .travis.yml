@@ -1,6 +1,6 @@
 rvm:
-  - 1.8.7 # (current default)
   - 1.9.2
-gemfile:
-  - gemfiles/Gemfile.rails-3.1.x
-  - gemfiles/Gemfile.rails-3.0.x
+  - 2.1
+env:
+  - "RAILS_VERSION=3.2.16"
+  - "RAILS_VERSION=4.0.2"

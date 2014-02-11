@@ -6,7 +6,7 @@ require 'minitest/autorun'
 require 'minitest/spec'
 require "active_record"
 require "auto_strip_attributes"
-require 'mocha'
+require 'mocha/setup'
 
 # if you need debug, add relevant line to auto_strip_attributes.gemspec
 # s.add_development_dependency 'ruby-debug'
