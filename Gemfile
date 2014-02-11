@@ -10,8 +10,8 @@ rails_version = ENV["RAILS_VERSION"] || "default"
 
 rails = case rails_version
   when "default"
-    #">= 3.2.0"
-    "~> 3.2.0"
+    ">= 3.2.0"
+    #"~> 3.2.16"
     #">= 4"
   else
     "~> #{rails_version}"
