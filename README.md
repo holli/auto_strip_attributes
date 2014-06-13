@@ -20,10 +20,10 @@ gem "auto_strip_attributes", "~> 2.0"
 ```ruby
 class User < ActiveRecord::Base
 
-  # Normal usage where " aaa   bbb\t " changes to "aaa bbb"
+  # Normal usage where " aaa  bbb\t " changes to "aaa  bbb"
   auto_strip_attributes :nick, :comment
 
-  # Squeezes spaces inside the string: "James   Bond  " => "James Bond"
+  # Squeezes spaces inside the string: "James     Bond  " => "James Bond"
   auto_strip_attributes :name, :squish => true
 
   # Won't set to null even if string is blank. "   " => ""

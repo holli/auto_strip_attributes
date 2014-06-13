@@ -55,6 +55,14 @@ describe AutoStripAttributes do
       @record.foo.must_equal "aaa"
     end
 
+    it "should be ok for normal strings and not squish things" do
+      @record = MockRecordBasic.new()
+      @record.foo = " aaa  bbb  "
+      @record.valid?
+      @record.foo.must_equal "aaa  bbb"
+    end
+
+
     it "should set empty strings to nil" do
       @record = MockRecordBasic.new()
       @record.foo = " "
