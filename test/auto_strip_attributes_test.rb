@@ -35,7 +35,7 @@ end
 describe AutoStripAttributes do
 
   def setup
-    @init_params = { :foo => "\tfoo  ", :bar => " bar  bar "}
+    @init_params = {:foo => "\tfoo  ", :bar => " bar  bar "}
   end
 
   it "should have defined AutoStripAttributes" do
@@ -53,6 +53,13 @@ describe AutoStripAttributes do
       @record.foo = " aaa \t"
       @record.valid?
       @record.foo.must_equal "aaa"
+    end
+
+    it "should not delete non breaking spaces" do
+      @record = MockRecordBasic.new()
+      @record.foo = " aaa \t\u00A0"
+      @record.valid?
+      @record.foo.must_equal "aaa \t\u00A0"
     end
 
     it "should be ok for normal strings and not squish things" do
@@ -101,6 +108,23 @@ describe AutoStripAttributes do
       assert @record.foo === str_mock
       str_mock.verify # "Should not call anything on mock when respond_to is false"
     end
+  end
+
+  describe "Attribute with convert non breaking spaces option" do
+    #class MockRecordWithConvertNBSP < ActiveRecord::Base
+    class MockRecordWithConvertNBSP < MockRecordParent
+      #column :foo, :string
+      attr_accessor :foo
+      auto_strip_attributes :foo, :convert_non_breaking_spaces => true
+    end
+
+    it "should delete non breaking spaces" do
+      @record = MockRecordWithConvertNBSP.new()
+      @record.foo = " aaa \t\u00A0"
+      @record.valid?
+      @record.foo.must_equal "aaa"
+    end
+
   end
 
   describe "Attribute with nullify option" do
@@ -207,7 +231,7 @@ describe AutoStripAttributes do
     it "should have default filters set in right order" do
       AutoStripAttributes::Config.setup :clear => true
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:strip, :nullify, :squish, :delete_whitespaces]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
     end
 
     it "should reset filters to defaults when :clear is true" do
@@ -218,7 +242,7 @@ describe AutoStripAttributes do
       end
       AutoStripAttributes::Config.setup :clear => true
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:strip, :nullify, :squish, :delete_whitespaces]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
     end
 
     it "should remove all filters when :clear is true and :defaults is false" do
@@ -251,7 +275,7 @@ describe AutoStripAttributes do
       filters_order = AutoStripAttributes::Config.filters_order
       filters_enabled = AutoStripAttributes::Config.filters_enabled
 
-      filters_order.must_equal [:strip, :nullify, :squish, :delete_whitespaces, :test]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces, :test]
       assert Proc === filters_block[:test]
       filters_enabled[:test].must_equal true
 
@@ -296,7 +320,7 @@ describe AutoStripAttributes do
       @record.valid?
       @record.foo.must_equal "FOO"
     end
-    
+
     it "should use extra filters when given" do
       @record = ComplexFirstMockRecord.new
       @record.bar_downcase = " BAR "

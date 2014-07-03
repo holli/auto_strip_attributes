@@ -42,6 +42,9 @@ class AutoStripAttributes::Config
     @filters_order ||= []
 
     if options[:defaults]
+      set_filter :convert_non_breaking_spaces => false do |value|
+        value.respond_to?(:gsub) ? value.gsub("\u00A0", " ") : value
+      end
       set_filter :strip => true do |value|
         value.respond_to?(:strip) ? value.strip : value
       end

@@ -36,6 +36,7 @@ end
 
 By default the following filters are defined (listed in the order of processing):
 
+- :convert_non_breaking_spaces (disabled by default) - converts non-breaking spaces to normal spaces (Unicode U+00A0)
 - :strip (enabled by default) - removes whitespaces from the beginning and the end of string
 - :nullify (enabled by default) - replaces empty strings with nil
 - :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
