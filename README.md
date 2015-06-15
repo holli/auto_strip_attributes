@@ -97,7 +97,7 @@ AutoStripAttributes::Config.setup accepts following options
 
 # Requirements
 
-Gem has been tested with Ruby 1.9.3, Ruby 2.1, Rails 3.2 and Rails 4.0. Although it should also work with previous versions of rails.
+Gem has been tested with newest Ruby & Rails combination and it probably works also with older versions. See test matrix at https://github.com/holli/auto_strip_attributes/blob/master/.travis.yml 
 
 [<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes)
 
