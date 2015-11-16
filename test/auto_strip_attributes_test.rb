@@ -38,6 +38,13 @@ describe AutoStripAttributes do
     @init_params = {:foo => "\tfoo  ", :bar => " bar  bar "}
   end
 
+  def teardown
+    AutoStripAttributes::Config.filters = {}
+    AutoStripAttributes::Config.filters_enabled = {}
+    AutoStripAttributes::Config.filters_order = []
+    AutoStripAttributes::Config.setup
+  end
+
   it "should have defined AutoStripAttributes" do
     assert Object.const_defined?(:AutoStripAttributes)
   end
