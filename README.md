@@ -91,8 +91,7 @@ AutoStripAttributes::Config.setup accepts following options
 
 # Versions
 
-- 1.x : Had only basic filters
-- 2.x : Includes config for extra filters (thnks to [@dadittoz](https://github.com/holli/auto_strip_attributes/issues/1))
+- see https://github.com/holli/auto_strip_attributes/blob/master/CHANGELOG.md
 
 
 # Requirements
