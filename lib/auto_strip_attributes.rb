@@ -62,7 +62,7 @@ class AutoStripAttributes::Config
       end
     end
 
-    instance_eval &block if block_given?
+    instance_eval(&block) if block_given?
   end
 
   def self.set_filter(filter,&block)
@@ -83,4 +83,3 @@ end
 ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
 AutoStripAttributes::Config.setup
 #ActiveModel::Validations::HelperMethods.send(:include, AutoStripAttributes) if defined? ActiveRecord
-
