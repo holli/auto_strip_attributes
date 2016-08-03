@@ -7,14 +7,16 @@ It works by adding a before_validation hook to the record. No other methods are 
 
 Gem has option to set empty strings to nil or to remove extra spaces inside the string.
 
-[<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes)
+[<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes) 
+[![Gem](https://img.shields.io/gem/dt/auto_strip_attributes.svg?maxAge=2592000)](https://rubygems.org/gems/auto_strip_attributes/)
+[![Gem](https://img.shields.io/gem/v/auto_strip_attributes.svg?maxAge=2592000)](https://rubygems.org/gems/auto_strip_attributes/)
 
 ## Howto / examples
 
 Include gem in your Gemfile:
 
 ```ruby
-gem "auto_strip_attributes", "~> 2.0"
+gem "auto_strip_attributes", "~> 2.1"
 ```
 
 ```ruby
