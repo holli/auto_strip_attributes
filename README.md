@@ -95,7 +95,7 @@ AutoStripAttributes::Config.setup accepts following options
 ## Rspec
 
 ### setup
-_spec_helper.rb
+_spec_helper.rb_
 
 ```ruby
 require 'auto_strip_attributes/matchers'
@@ -108,35 +108,39 @@ end
 ### Usage
 
 ```ruby
-
 let(:user) { User.new }
 
 it { expect(user).to auto_strip(:name) }
 it { expect(user).to auto_strip(:name, :last_name) }
 ```
 
-_examples:_
+**examples:**
 
 will override the default examples and only try with the provided
 ```ruby
 it { expect(user).to auto_strip(:name, :last_name).examples([['  hello  ', 'hello'], ['', '']]) }
 ```
 
-_example:_
+**example:**
+
 Will override all examples and only execute the provided
 ```ruby
 it { expect(user).to auto_strip(:name, :last_name).example('  hello  ', 'hello') }
 ```
-
-_squish:_
+**squish:**
 
 Will add an squish example.
-```ruby
-# if should squish default: true
-# 's   q' => 's q'
-it { expect(user).to auto_strip(:name, :last_name).squish }
+if it should squish, default: true
+`'s   q' => 's q'`
 
-# 's   q' => 's   q'
+```ruby
+it { expect(user).to auto_strip(:name, :last_name).squish }
+```
+
+if it should not
+`'s   q' => 's   q'`
+
+```ruby
 it { expect(user).to auto_strip(:name, :last_name).squish(false) }
 ```
 
