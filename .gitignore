@@ -7,5 +7,6 @@ pkg/*
 .project
 .idea
 .redcar
+.ruby-version
 
 help

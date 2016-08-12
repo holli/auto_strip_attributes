@@ -7,7 +7,7 @@ It works by adding a before_validation hook to the record. No other methods are 
 
 Gem has option to set empty strings to nil or to remove extra spaces inside the string.
 
-[<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes) 
+[<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes)
 [![Gem](https://img.shields.io/gem/dt/auto_strip_attributes.svg?maxAge=2592000)](https://rubygems.org/gems/auto_strip_attributes/)
 [![Gem](https://img.shields.io/gem/v/auto_strip_attributes.svg?maxAge=2592000)](https://rubygems.org/gems/auto_strip_attributes/)
 
@@ -90,6 +90,57 @@ AutoStripAttributes::Config.setup accepts following options
 - :clear => true, to clear all filters
 - :defaults => true, to set three default filters mentioned above
 
+# Testing
+
+## Rspec
+
+### setup
+_spec_helper.rb
+
+```ruby
+require 'auto_strip_attributes/matchers'
+
+RSpec.configure do |config|
+  config.include AutoStripAttributes::Matchers, type: :model
+end
+```
+
+### Usage
+
+```ruby
+
+let(:user) { User.new }
+
+it { expect(user).to auto_strip(:name) }
+it { expect(user).to auto_strip(:name, :last_name) }
+```
+
+_examples:_
+
+will override the default examples and only try with the provided
+```ruby
+it { expect(user).to auto_strip(:name, :last_name).examples([['  hello  ', 'hello'], ['', '']]) }
+```
+
+_example:_
+Will override all examples and only execute the provided
+```ruby
+it { expect(user).to auto_strip(:name, :last_name).example('  hello  ', 'hello') }
+```
+
+_squish:_
+
+Will add an squish example.
+```ruby
+# if should squish default: true
+# 's   q' => 's q'
+it { expect(user).to auto_strip(:name, :last_name).squish }
+
+# 's   q' => 's   q'
+it { expect(user).to auto_strip(:name, :last_name).squish(false) }
+```
+
+
 
 # Versions
 
@@ -98,7 +149,7 @@ AutoStripAttributes::Config.setup accepts following options
 
 # Requirements
 
-Gem has been tested with newest Ruby & Rails combination and it probably works also with older versions. See test matrix at https://github.com/holli/auto_strip_attributes/blob/master/.travis.yml 
+Gem has been tested with newest Ruby & Rails combination and it probably works also with older versions. See test matrix at https://github.com/holli/auto_strip_attributes/blob/master/.travis.yml
 
 [<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes)
 
@@ -130,4 +181,3 @@ different approaches. See discussion in previous chapter.
 # Licence
 
 Released under the MIT license (http://www.opensource.org/licenses/mit-license.php)
-

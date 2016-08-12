@@ -7,6 +7,7 @@ require 'minitest/spec'
 require "active_record"
 require "auto_strip_attributes"
 require 'mocha/setup'
+require File.expand_path('mock_record_parent', __dir__)
 
 # if you need debug, add relevant line to auto_strip_attributes.gemspec
 # s.add_development_dependency 'ruby-debug'
@@ -15,22 +16,7 @@ require 'mocha/setup'
 # require 'ruby-debug'
 
 
-class MockRecordParent
-  include ActiveModel::Validations
-  include ActiveModel::Validations::Callbacks
-  extend AutoStripAttributes
 
-  # Overriding @record[key]=val , that's only found in activerecord, not in ActiveModel
-  def []=(key, val)
-    # send("#{key}=", val)  # We dont want to call setter again
-    instance_variable_set(:"@#{key}", val)
-  end
-
-  def [](key)
-    instance_variable_get(:"@#{key}")
-  end
-
-end
 
 describe AutoStripAttributes do
 
@@ -342,6 +328,4 @@ describe AutoStripAttributes do
       @record.bar_downcase.must_equal ""
     end
   end
-
-
 end
