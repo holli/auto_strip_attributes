@@ -10,8 +10,8 @@ module AutoStripAttributes
       attr_reader :attrs, :model, :descriptions, :failure_messages
       def initialize(attrs)
         @attrs = attrs
-        @failure_messages = []
-        @descriptions = ["auto strips attributes `#{attrs.join(', ')}`"]
+        @failure_messages = ["should auto_strip"]
+        @descriptions = ["auto strip attributes `#{attrs.join(', ')}`"]
       end
 
       def matches?(model)
@@ -57,15 +57,18 @@ module AutoStripAttributes
           model.send("#{attribute}=", example[0])
         end
         model.valid?
-        out = attrs.all? do |attribute|
-                model.send(attribute) == example[1]
-              end
-        append_error(example) unless out
-        out
+        attrs.all? do |attribute|
+          if model.send(attribute) == example[1]
+            true
+          else
+            append_error(attribute, example)
+            false
+          end
+        end
       end
 
-      def append_error(example)
-        failure_messages << "change `#{example[0]}` to `#{example[1].nil? ? 'nil' : example[1]}`"
+      def append_error(attribute, example)
+        failure_messages << "`#{attribute}`"
       end
 
       def _examples
