@@ -9,11 +9,9 @@ require "auto_strip_attributes"
 require 'mocha/setup'
 
 # if you need debug, add relevant line to auto_strip_attributes.gemspec
-# s.add_development_dependency 'ruby-debug'
-# s.add_development_dependency 'ruby-debug19'
-# and uncomment following line
-# require 'ruby-debug'
-require 'pry'
+# s.add_development_dependency 'pry'
+# and uncomment following line, and then write binding.pry somewhere
+# require 'pry'
 
 
 class MockRecordParent
