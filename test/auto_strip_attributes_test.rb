@@ -13,6 +13,7 @@ require 'mocha/setup'
 # s.add_development_dependency 'ruby-debug19'
 # and uncomment following line
 # require 'ruby-debug'
+require 'pry'
 
 
 class MockRecordParent
@@ -27,7 +28,8 @@ class MockRecordParent
   end
 
   def [](key)
-    instance_variable_get(:"@#{key}")
+    k = :"@#{key}"
+    instance_variable_defined?(k) ? instance_variable_get(k) : nil
   end
 
 end

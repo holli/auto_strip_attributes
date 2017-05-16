@@ -2,15 +2,11 @@ language: ruby
 sudo: false
 cache: bundler
 rvm:
-  - 2.1.9
   - 2.2.5
   - 2.3.1
+  - 2.4.0
 env:
-  - "RAILS_VERSION=4.0"
-  - "RAILS_VERSION=4.1"
   - "RAILS_VERSION=4.2"
   - "RAILS_VERSION=5.0"
-matrix:
-  exclude:
-    - rvm: 2.1.9
-      env: "RAILS_VERSION=5.0"
+  - "RAILS_VERSION=5.1"
+
