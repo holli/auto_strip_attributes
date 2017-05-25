@@ -9,11 +9,15 @@ module AutoStripAttributes
 
     attributes.each do |attribute|
       before_validation do |record|
-        #debugger
-        value = record[attribute]
+        value = if record.is_a?(ActiveRecord::Base)
+          record.read_attribute_before_type_cast(attribute.to_s)
+        else
+          record.send(attribute)
+        end
+
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next unless options[filter_name]
-          value = AutoStripAttributes::Config.filters[filter_name].call value
+          value = AutoStripAttributes::Config.filters[filter_name].call(value)
           record[attribute] = value
         end
       end
