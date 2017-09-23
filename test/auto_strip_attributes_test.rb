@@ -230,6 +230,31 @@ describe AutoStripAttributes do
     end
   end
 
+  describe "Virtual attributes" do
+    class MockVirtualAttribute < MockRecordParent
+      undef :[]=
+      undef :[]
+
+      auto_strip_attributes :foo, virtual: true
+
+      def foo
+        @bar
+      end
+
+      def foo=(val)
+        @bar = val
+      end
+    end
+
+    it "should handle everything ok" do
+      @record = MockVirtualAttribute.new
+      @record.foo = "  foo  "
+      @record.foo.must_equal "  foo  "
+      @record.valid?
+      @record.foo.must_equal "foo"
+    end
+  end
+
   describe "Configuration tests" do
     it "should have defined AutoStripAttributes::Config" do
       assert AutoStripAttributes.const_defined?(:Config)

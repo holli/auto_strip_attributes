@@ -7,14 +7,27 @@ module AutoStripAttributes
       options = options.merge(attributes.pop)
     end
 
+    # The reason a new option `:virtual` is needed because there are tests that
+    # guarantee that getter/setter methods for an attribute will _not_ be invoked
+    # by `auto_strip_attributes` by default.
+    virtual = options.delete(:virtual)
+
     attributes.each do |attribute|
       before_validation do |record|
         #debugger
-        value = record[attribute]
+        if virtual
+          value = record.public_send(attribute)
+        else
+          value = record[attribute]
+        end
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next unless options[filter_name]
           value = AutoStripAttributes::Config.filters[filter_name].call value
-          record[attribute] = value
+          if virtual
+            record.public_send("#{attribute}=", value)
+          else
+            record[attribute] = value
+          end
         end
       end
     end
