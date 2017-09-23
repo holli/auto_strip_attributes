@@ -7,9 +7,8 @@ module AutoStripAttributes
       options = options.merge(attributes.pop)
     end
 
-    # The reason a new option `:virtual` is needed because there are tests that
-    # guarantee that getter/setter methods for an attribute will _not_ be invoked
-    # by `auto_strip_attributes` by default.
+    # option `:virtual` is needed because we want to guarantee that
+    # getter/setter methods for an attribute will _not_ be invoked by default
     virtual = options.delete(:virtual)
 
     attributes.each do |attribute|

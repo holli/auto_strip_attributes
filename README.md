@@ -41,12 +41,12 @@ end
 
 By default the following options are defined (listed in the order of processing):
 
-- :virtual (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option to use `auto_strip_attributes` with non-persistent attributes.
-- :convert_non_breaking_spaces (disabled by default) - converts non-breaking spaces to normal spaces (Unicode U+00A0)
 - :strip (enabled by default) - removes whitespaces from the beginning and the end of string
 - :nullify (enabled by default) - replaces empty strings with nil
 - :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
 - :delete_whitespaces (disabled by default) - delete all whitespaces (including tabs)
+- :convert_non_breaking_spaces (disabled by default) - converts non-breaking spaces to normal spaces (Unicode U+00A0)
+- :virtual (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.
 
 ### Custom Filters
 

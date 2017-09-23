@@ -1,5 +1,9 @@
 ## [Master]
 
+## [2.2] - 2016-07-28
+
+  - Added 'virtual'-option (thnks to [@nasa42](https://github.com/holli/auto_strip_attributes/pull/23))
+
 ## [2.1] - 2016-07-28
 
   - Drop support for ruby 1.9.3
