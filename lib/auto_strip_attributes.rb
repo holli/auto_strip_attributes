@@ -67,7 +67,8 @@ class AutoStripAttributes::Config
         (value.respond_to?(:'blank?') and value.respond_to?(:'empty?') and value.blank?) ? nil : value
       end
       set_filter :squish => false do |value|
-        value.respond_to?(:gsub) ? value.gsub(/\s+/, ' ') : value
+        value = value.respond_to?(:gsub) ? value.gsub(/[[:space:]]+/, ' ') : value
+        value.respond_to?(:strip) ? value.strip : value
       end
       set_filter :delete_whitespaces => false do |value|
         value.respond_to?(:delete) ? value.delete(" \t") : value
