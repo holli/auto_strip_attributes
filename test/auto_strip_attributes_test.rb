@@ -154,12 +154,13 @@ describe AutoStripAttributes do
     class MockRecordWithSqueeze < MockRecordParent #< ActiveRecord::Base
       #column :foo, :st
       attr_accessor :foo
-      auto_strip_attributes :foo, :squish => true
+      # test that `:squish => true` implies `:strip => true`
+      auto_strip_attributes :foo, :squish => true, :strip => false
     end
 
     it "should squish string also form inside" do
       @record = MockRecordWithSqueeze.new
-      @record.foo = "  aaa\t\n     bbb"
+      @record.foo = "  aaa \u0009 \u000A \u000B \u000C \u000D \u0020 \u0085 \u00A0 \u1680 \u2000 \u2001 \u2002 \u2003 \u2004 \u2005 \u2006 \u2007 \u2008 \u2009 \u200A \u2028 \u2029 \u202F \u205F \u3000 bbb  \u00A0   "
       @record.valid?
       @record.foo.must_equal "aaa bbb"
     end

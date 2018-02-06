@@ -26,10 +26,10 @@ class User < ActiveRecord::Base
   auto_strip_attributes :nick, :comment
 
   # Squeezes spaces inside the string: "James     Bond  " => "James Bond"
-  auto_strip_attributes :name, :squish => true
+  auto_strip_attributes :name, squish: true
 
   # Won't set to null even if string is blank. "   " => ""
-  auto_strip_attributes :email, :nullify => false
+  auto_strip_attributes :email, nullify: false
 
   # Use with attributes that are not mapped to a column
   auto_strip_attributes :password, virtual: true
@@ -41,12 +41,12 @@ end
 
 By default the following options are defined (listed in the order of processing):
 
-- :strip (enabled by default) - removes whitespaces from the beginning and the end of string
-- :nullify (enabled by default) - replaces empty strings with nil
-- :squish (disabled by default) - replaces extra whitespaces (including tabs) with one space
-- :delete_whitespaces (disabled by default) - delete all whitespaces (including tabs)
-- :convert_non_breaking_spaces (disabled by default) - converts non-breaking spaces to normal spaces (Unicode U+00A0)
-- :virtual (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.
+- `:strip` (enabled by default) - removes whitespaces from the beginning and the end of string. Works exactly same as `String#strip`, i.e., may not strip non-ASCII whitespaces.
+- `:nullify` (enabled by default) - replaces empty strings with nil.
+- `:squish` (disabled by default) - replaces all consecutive Unicode whitespace characters (including tabs and new lines) with single space (U+0020) and then strips the string.
+- `:delete_whitespaces` (disabled by default) - deletes all spaces (U+0020) and tabs (U+0009).
+- `:convert_non_breaking_spaces` (disabled by default) - converts non-breaking spaces (U+00A0) to normal spaces (U+0020).
+- `:virtual` (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.
 
 ### Custom Filters
 
