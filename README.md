@@ -16,7 +16,7 @@ Gem has option to set empty strings to nil or to remove extra spaces inside the 
 Include gem in your Gemfile:
 
 ```ruby
-gem "auto_strip_attributes", "~> 2.2"
+gem "auto_strip_attributes", "~> 2.3"
 ```
 
 ```ruby
@@ -43,7 +43,7 @@ By default the following options are defined (listed in the order of processing)
 
 - `:strip` (enabled by default) - removes whitespaces from the beginning and the end of string. Works exactly same as `String#strip`, i.e., may not strip non-ASCII whitespaces.
 - `:nullify` (enabled by default) - replaces empty strings with nil.
-- `:squish` (disabled by default) - replaces all consecutive Unicode whitespace characters (including tabs and new lines) with single space (U+0020) and then strips the string.
+- `:squish` (disabled by default) - replaces all consecutive Unicode whitespace characters (including tabs and new lines) with single space (U+0020). Works exactly same as Rails `String#squish`
 - `:delete_whitespaces` (disabled by default) - deletes all spaces (U+0020) and tabs (U+0009).
 - `:convert_non_breaking_spaces` (disabled by default) - converts non-breaking spaces (U+00A0) to normal spaces (U+0020).
 - `:virtual` (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.

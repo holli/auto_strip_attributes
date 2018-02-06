@@ -1,5 +1,9 @@
 ## [Master]
 
+## [2.3] - 2018-02-06
+
+  - Replacing all utf8 characters in squish (thnks to [@nasa42](https://github.com/holli/auto_strip_attributes/pull/24))
+
 ## [2.2] - 2016-07-28
 
   - Added 'virtual'-option (thnks to [@nasa42](https://github.com/holli/auto_strip_attributes/pull/23))
