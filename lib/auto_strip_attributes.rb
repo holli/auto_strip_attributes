@@ -21,7 +21,7 @@ module AutoStripAttributes
         end
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next unless options[filter_name]
-          value = AutoStripAttributes::Config.filters[filter_name].call value
+          value = AutoStripAttributes::Config.filters[filter_name].call value, options[filter_name]
           if virtual
             record.public_send("#{attribute}=", value)
           else
@@ -72,6 +72,12 @@ class AutoStripAttributes::Config
       end
       set_filter :delete_whitespaces => false do |value|
         value.respond_to?(:delete) ? value.delete(" \t") : value
+      end
+      set_filter :truncate => false do |value, options|
+        unless options.is_a?(Integer) && options > 0
+          raise "Expected :truncate option to be a positive integer, found #{options.inspect} instead"
+        end
+        value.to_s[0, options]
       end
     end
 

@@ -33,6 +33,9 @@ class User < ActiveRecord::Base
 
   # Use with attributes that are not mapped to a column
   auto_strip_attributes :password, virtual: true
+
+  # Truncate the attribute
+  auto_strip_attributes :description, truncate: 255
 end
 ```
 
@@ -46,7 +49,8 @@ By default the following options are defined (listed in the order of processing)
 - `:squish` (disabled by default) - replaces all consecutive Unicode whitespace characters (including tabs and new lines) with single space (U+0020). Works exactly same as Rails `String#squish`
 - `:delete_whitespaces` (disabled by default) - deletes all spaces (U+0020) and tabs (U+0009).
 - `:convert_non_breaking_spaces` (disabled by default) - converts non-breaking spaces (U+00A0) to normal spaces (U+0020).
-- `:virtual` (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.
+- `:truncate` (disabled by default) - truncate the string to given length. Truncation happens after whitespaces are removed.
+- `:virtual` (disabled by default) - by default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.
 
 ### Custom Filters
 
@@ -65,13 +69,19 @@ AutoStripAttributes::Config.setup do
   set_filter :strip_html => false do |value|
     ActionController::Base.helpers.strip_tags value
   end
+
+  # Use `String#truncate` provided by ActiveSupport
+  set_filter better_truncate: false do |value, options|
+    value.truncate(options.delete(:length), options)
+  end
 end
 
 
 And in the model:
 
 class User < ActiveRecord::Base
-  auto_strip_attributes :extra_info, :strip_html => true
+  auto_strip_attributes :extra_info, strip_html: true
+  auto_strip_attributes :description, better_truncate: { length: 255, separator: " ", omission: "…" }
 end
 
 ```

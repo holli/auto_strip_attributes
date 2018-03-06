@@ -231,6 +231,35 @@ describe AutoStripAttributes do
     end
   end
 
+  describe "truncate option" do
+    class MockRecordForTruncate < MockRecordParent
+      attr_accessor :foo
+      auto_strip_attributes :foo, truncate: 5
+    end
+
+    class MockRecordForTruncateError < MockRecordParent
+      attr_accessor :foo
+      auto_strip_attributes :foo, truncate: true
+    end
+
+    it "should truncate the value" do
+      @record = MockRecordForTruncate.new
+      @record.foo = "  1234567890  "
+      @record.valid?
+      @record.foo.must_equal "12345"
+    end
+
+    it "should raise an error if truncate option is not an integer" do
+      error_message = "Expected :truncate option to be a positive integer, found true instead"
+
+      @record = MockRecordForTruncateError.new
+      @record.foo = "  1234567890  "
+      assert_raises(error_message) do
+        @record.valid?
+      end
+    end
+  end
+
   describe "Virtual attributes" do
     class MockVirtualAttribute < MockRecordParent
       undef :[]=
@@ -264,7 +293,7 @@ describe AutoStripAttributes do
     it "should have default filters set in right order" do
       AutoStripAttributes::Config.setup :clear => true
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces, :truncate]
     end
 
     it "should reset filters to defaults when :clear is true" do
@@ -275,7 +304,7 @@ describe AutoStripAttributes do
       end
       AutoStripAttributes::Config.setup :clear => true
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces, :truncate]
     end
 
     it "should remove all filters when :clear is true and :defaults is false" do
@@ -308,7 +337,7 @@ describe AutoStripAttributes do
       filters_order = AutoStripAttributes::Config.filters_order
       filters_enabled = AutoStripAttributes::Config.filters_enabled
 
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces, :test]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces, :truncate, :test]
       assert Proc === filters_block[:test]
       filters_enabled[:test].must_equal true
 
