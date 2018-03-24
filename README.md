@@ -47,13 +47,14 @@ By default the following options are defined (listed in the order of processing)
 - `:delete_whitespaces` (disabled by default) - deletes all spaces (U+0020) and tabs (U+0009).
 - `:convert_non_breaking_spaces` (disabled by default) - converts non-breaking spaces (U+00A0) to normal spaces (U+0020).
 - `:virtual` (disabled by default) - By default `auto_strip_attributes` doesn't work with non-persistent attributes (e.g., attributes that are created with `attr_accessor`). This is to avoid calling their custom getter/setter methods. Use this option with non-persistent attributes.
+- For more filters use custom filters (more examples at https://github.com/holli/auto_strip_attributes/wiki)
 
 ### Custom Filters
 
 Gem supports custom filtering methods. Custom methods can be set by calling to set_filter method
 inside a block passed to AutoStripAttributes::Config.setup. set_filter method accepts either Symbol or Hash as a
 parameter. If parameter is a Hash, the key should be filter name and the value is boolean whether filter is enabled by
-default or not. Block should return processed value.
+default or not. Block should return processed value. See examples of custom filters at https://github.com/holli/auto_strip_attributes/wiki
 
 This is an example on how to add html tags stripping in Rails
 
