@@ -1,5 +1,8 @@
 ## [Master]
 
+  - Using `ActiveSupport.on_load(:active_record)` instead of direct `extend`. ([#26](https://github.com/holli/auto_strip_attributes/commit/02431f07fcd880baaa352fc3e5a47d07c6d3935d))
+  - Possibility to pass options to custom filters. ([@nasa42#27](https://github.com/holli/auto_strip_attributes/pull/27))
+
 ## [2.3] - 2018-02-06
 
   - Replacing all utf8 characters in squish (thnks to [@nasa42](https://github.com/holli/auto_strip_attributes/pull/24))

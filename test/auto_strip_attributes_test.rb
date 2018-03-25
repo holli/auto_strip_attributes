@@ -323,6 +323,32 @@ describe AutoStripAttributes do
 
   end
 
+  describe "Using options in custom filters" do
+    class CustomOptionsMockRecord < MockRecordParent
+      attr_accessor :foo, :bar_downcase
+      auto_strip_attributes :foo, truncate_test: {length: 5, separator: " ", omission: "…"}
+    end
+
+    def setup
+      AutoStripAttributes::Config.setup do
+        set_filter(:truncate_test) do |value, options|
+          !value.blank? && value.respond_to?(:truncate) ? value.truncate(options[:length], omission: options[:omission]) : value
+        end
+      end
+    end
+
+    def teardown
+      AutoStripAttributes::Config.setup :defaults => true
+    end
+
+    it "should be able to truncate as asked" do
+      @record = CustomOptionsMockRecord.new
+      @record.foo = " abcdefghijklmnopqrstijklmn"
+      @record.valid?
+      @record.foo.must_equal "abcd…"
+    end
+  end
+
   describe "complex usecase with custom config" do
     class ComplexFirstMockRecord < MockRecordParent
       #column :foo, :string

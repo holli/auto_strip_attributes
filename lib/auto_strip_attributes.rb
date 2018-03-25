@@ -13,15 +13,14 @@ module AutoStripAttributes
 
     attributes.each do |attribute|
       before_validation do |record|
-        #debugger
         if virtual
           value = record.public_send(attribute)
         else
           value = record[attribute]
         end
         AutoStripAttributes::Config.filters_order.each do |filter_name|
-          next unless options[filter_name]
-          value = AutoStripAttributes::Config.filters[filter_name].call value
+          next if !options[filter_name]
+          value = AutoStripAttributes::Config.filters[filter_name].call(value, options[filter_name])
           if virtual
             record.public_send("#{attribute}=", value)
           else
@@ -78,8 +77,8 @@ class AutoStripAttributes::Config
     instance_eval(&block) if block_given?
   end
 
-  def self.set_filter(filter,&block)
-    if filter.is_a?(Hash) then
+  def self.set_filter(filter, &block)
+    if filter.is_a?(Hash)
       filter_name = filter.keys.first
       filter_enabled = filter.values.first
     else
@@ -89,7 +88,7 @@ class AutoStripAttributes::Config
     @filters[filter_name] = block
     @filters_enabled[filter_name] = filter_enabled
     # in case filter is redefined, we probably don't want to change the order
-    @filters_order << filter_name unless @filters_order.include? filter_name
+    @filters_order << filter_name if !@filters_order.include?(filter_name)
   end
 end
 
