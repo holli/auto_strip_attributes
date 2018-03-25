@@ -16,7 +16,7 @@ Gem has option to set empty strings to nil or to remove extra spaces inside the 
 Include gem in your Gemfile:
 
 ```ruby
-gem "auto_strip_attributes", "~> 2.3"
+gem "auto_strip_attributes", "~> 2.4"
 ```
 
 ```ruby
@@ -72,7 +72,7 @@ end
 And in the model:
 
 class User < ActiveRecord::Base
-  auto_strip_attributes :extra_info, :strip_html => true
+  auto_strip_attributes :extra_info, strip_html: true
 end
 
 ```

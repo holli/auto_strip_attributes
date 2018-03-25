@@ -39,37 +39,31 @@ class AutoStripAttributes::Config
     attr_accessor :filters_order
   end
 
-  def self.setup(user_options=nil,&block)
-    options = {
-        :clear => false,
-        :defaults => true,
-    }
-    options = options.merge user_options if user_options.is_a?(Hash)
-
-    @filters, @filters_enabled, @filters_order = {}, {}, [] if options[:clear]
+  def self.setup(clear_previous: false, defaults: true, &block)
+    @filters, @filters_enabled, @filters_order = {}, {}, [] if clear_previous
 
     @filters ||= {}
     @filters_enabled ||= {}
     @filters_order ||= []
 
-    if options[:defaults]
-      set_filter :convert_non_breaking_spaces => false do |value|
+    if defaults
+      set_filter(convert_non_breaking_spaces: false) do |value|
         value.respond_to?(:gsub) ? value.gsub("\u00A0", " ") : value
       end
-      set_filter :strip => true do |value|
+      set_filter(strip: true) do |value|
         value.respond_to?(:strip) ? value.strip : value
       end
-      set_filter :nullify => true do |value|
+      set_filter(nullify: true) do |value|
         # We check for blank? and empty? because rails uses empty? inside blank?
         # e.g. MiniTest::Mock.new() only responds to .blank? but not empty?, check tests for more info
         # Basically same as value.blank? ? nil : value
         (value.respond_to?(:'blank?') and value.respond_to?(:'empty?') and value.blank?) ? nil : value
       end
-      set_filter :squish => false do |value|
+      set_filter(squish: false) do |value|
         value = value.respond_to?(:gsub) ? value.gsub(/[[:space:]]+/, ' ') : value
         value.respond_to?(:strip) ? value.strip : value
       end
-      set_filter :delete_whitespaces => false do |value|
+      set_filter(delete_whitespaces: false) do |value|
         value.respond_to?(:delete) ? value.delete(" \t") : value
       end
     end

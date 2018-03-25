@@ -2,6 +2,7 @@
 
   - Using `ActiveSupport.on_load(:active_record)` instead of direct `extend`. ([#26](https://github.com/holli/auto_strip_attributes/commit/02431f07fcd880baaa352fc3e5a47d07c6d3935d))
   - Possibility to pass options to custom filters. ([@nasa42#27](https://github.com/holli/auto_strip_attributes/pull/27))
+  - Rewritten to use named attributes instead of hash, and other ruby 2 stuff 
 
 ## [2.3] - 2018-02-06
 

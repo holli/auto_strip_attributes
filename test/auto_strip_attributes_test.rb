@@ -122,7 +122,7 @@ describe AutoStripAttributes do
     class MockRecordWithConvertNBSP < MockRecordParent
       #column :foo, :string
       attr_accessor :foo
-      auto_strip_attributes :foo, :convert_non_breaking_spaces => true
+      auto_strip_attributes :foo, convert_non_breaking_spaces: true
     end
 
     it "should delete non breaking spaces" do
@@ -139,7 +139,7 @@ describe AutoStripAttributes do
     class MockRecordWithNullify < MockRecordParent
       #column :foo, :string
       attr_accessor :foo
-      auto_strip_attributes :foo, :nullify => false
+      auto_strip_attributes :foo, nullify: false
     end
 
     it "should not set blank strings to nil" do
@@ -152,10 +152,9 @@ describe AutoStripAttributes do
 
   describe "Attribute with squish option" do
     class MockRecordWithSqueeze < MockRecordParent #< ActiveRecord::Base
-      #column :foo, :st
       attr_accessor :foo
-      # test that `:squish => true` implies `:strip => true`
-      auto_strip_attributes :foo, :squish => true, :strip => false
+      # testing also that `:squish => true` implies `:strip => true`
+      auto_strip_attributes :foo, squish: true, strip: false
     end
 
     it "should squish string also form inside" do
@@ -177,7 +176,7 @@ describe AutoStripAttributes do
     class MockRecordWithDelete < MockRecordParent
       #column :foo, :string
       attr_accessor :foo
-      auto_strip_attributes :foo, :delete_whitespaces => true
+      auto_strip_attributes :foo, delete_whitespaces: true
     end
 
     it "should delete all spaces and tabs" do
@@ -196,7 +195,7 @@ describe AutoStripAttributes do
       #column :bang, :integer
       attr_accessor :foo, :bar, :biz, :bang
       auto_strip_attributes :foo, :bar
-      auto_strip_attributes :biz, {:nullify => false, :squish => true}
+      auto_strip_attributes :biz, {nullify: false, squish: true}
     end
 
     it "should handle everything ok" do
@@ -262,34 +261,34 @@ describe AutoStripAttributes do
     end
 
     it "should have default filters set in right order" do
-      AutoStripAttributes::Config.setup :clear => true
+      AutoStripAttributes::Config.setup(clear_previous: true)
       filters_order = AutoStripAttributes::Config.filters_order
       filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
     end
 
     it "should reset filters to defaults when :clear is true" do
       AutoStripAttributes::Config.setup do
-        set_filter :test do
+        set_filter(:test) do
           'test'
         end
       end
-      AutoStripAttributes::Config.setup :clear => true
+      AutoStripAttributes::Config.setup(clear_previous: true)
       filters_order = AutoStripAttributes::Config.filters_order
       filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
     end
 
     it "should remove all filters when :clear is true and :defaults is false" do
       AutoStripAttributes::Config.setup do
-        set_filter :test do
+        set_filter(:test) do
           'test'
         end
       end
-      AutoStripAttributes::Config.setup :clear => true, :defaults => false
+      AutoStripAttributes::Config.setup(clear_previous: true, defaults: false)
       filter_order = AutoStripAttributes::Config.filters_order
       filter_order.must_equal []
 
       # returning to original state
-      AutoStripAttributes::Config.setup :clear => true
+      AutoStripAttributes::Config.setup(clear_previous: true)
     end
 
     it "should correctly define and process custom filters" do
@@ -299,7 +298,7 @@ describe AutoStripAttributes do
       end
 
       AutoStripAttributes::Config.setup do
-        set_filter :test => true do |value|
+        set_filter(test: true) do |value|
           value.downcase
         end
       end
@@ -318,7 +317,7 @@ describe AutoStripAttributes do
       @record.foo.must_equal "foo"
 
       # returning to original state
-      AutoStripAttributes::Config.setup :clear => true
+      AutoStripAttributes::Config.setup(clear_previous: true)
     end
 
   end
@@ -338,7 +337,7 @@ describe AutoStripAttributes do
     end
 
     def teardown
-      AutoStripAttributes::Config.setup :defaults => true
+      AutoStripAttributes::Config.setup(defaults: true, clear_previous: true)
     end
 
     it "should be able to truncate as asked" do
@@ -354,7 +353,7 @@ describe AutoStripAttributes do
       #column :foo, :string
       attr_accessor :foo, :bar_downcase
       auto_strip_attributes :foo
-      auto_strip_attributes :bar_downcase, :downcase => true, :nullify => false
+      auto_strip_attributes :bar_downcase, downcase: true, nullify: false
     end
 
     # before will not work currently: https://github.com/seattlerb/minitest/issues/50 using def setup
@@ -363,14 +362,14 @@ describe AutoStripAttributes do
 
     def setup
       AutoStripAttributes::Config.setup do
-        set_filter :downcase => false do |value|
+        set_filter(downcase: false) do |value|
           value.downcase if value.respond_to?(:downcase)
         end
       end
     end
 
     def teardown
-      AutoStripAttributes::Config.setup :defaults => true
+      AutoStripAttributes::Config.setup(defaults: true, clear_previous: true)
     end
 
     it "should not use extra filters when not in setup" do
