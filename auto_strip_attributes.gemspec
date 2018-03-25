@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
 
-  s.add_runtime_dependency "activerecord", ">= 3.0"
+  s.add_runtime_dependency "activerecord", ">= 4.0"
 
   #s.add_development_dependency "activerecord", ">= 3.0"
   s.add_development_dependency "minitest", ">= 2.8.1"

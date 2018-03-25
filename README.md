@@ -63,7 +63,7 @@ This is an example on how to add html tags stripping in Rails
 E.g. inside config/initializers/auto_strip_attributes.rb
 
 AutoStripAttributes::Config.setup do
-  set_filter :strip_html => false do |value|
+  set_filter(strip_html: false) do |value|
     ActionController::Base.helpers.strip_tags value
   end
 end
