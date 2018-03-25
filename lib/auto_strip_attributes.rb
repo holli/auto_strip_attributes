@@ -93,6 +93,9 @@ class AutoStripAttributes::Config
   end
 end
 
-ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
+#ActiveRecord::Base.send(:extend, AutoStripAttributes) if defined? ActiveRecord
+ActiveSupport.on_load(:active_record) do
+  extend AutoStripAttributes
+end
+
 AutoStripAttributes::Config.setup
-#ActiveModel::Validations::HelperMethods.send(:include, AutoStripAttributes) if defined? ActiveRecord
