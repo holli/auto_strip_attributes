@@ -49,6 +49,27 @@ describe AutoStripAttributes do
     assert Object.const_defined?(:AutoStripAttributes)
   end
 
+  describe "Basic attribute with default options and conditional evaluation" do
+    class MockRecordBasic < MockRecordParent
+      attr_accessor :boo
+      auto_strip_attributes :boo, if: ->(record) { record[:boo] == " bbb \t" }
+    end
+
+    it "should not strip when conditional is not met" do
+      @record = MockRecordBasic.new()
+      @record.boo = " aaa \t"
+      @record.valid?
+      @record.boo.must_equal " aaa \t"
+    end
+
+    it "should strip when conditional is met" do
+      @record = MockRecordBasic.new()
+      @record.boo = " bbb \t"
+      @record.valid?
+      @record.boo.must_equal "bbb"
+    end
+  end
+
   describe "Basic attribute with default options" do
     class MockRecordBasic < MockRecordParent
       attr_accessor :foo
