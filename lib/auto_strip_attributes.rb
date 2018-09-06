@@ -12,7 +12,7 @@ module AutoStripAttributes
     virtual = options.delete(:virtual)
 
     attributes.each do |attribute|
-      before_validation do |record|
+      before_validation(options) do |record|
         if virtual
           value = record.public_send(attribute)
         else
