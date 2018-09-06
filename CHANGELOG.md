@@ -1,5 +1,9 @@
 ## [Master]
 
+## [2.5]
+
+  - Support for callback options (e.g. if: -> ...) (thnks to [watsonjon](https://github.com/holli/auto_strip_attributes/pull/28)
+
 ## [2.4]
 
   - Using `ActiveSupport.on_load(:active_record)` instead of direct `extend`. ([#26](https://github.com/holli/auto_strip_attributes/commit/02431f07fcd880baaa352fc3e5a47d07c6d3935d))
