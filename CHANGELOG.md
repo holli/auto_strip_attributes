@@ -2,7 +2,7 @@
 
 ## [2.5]
 
-  - Support for callback options (e.g. if: -> ...) (thnks to [watsonjon](https://github.com/holli/auto_strip_attributes/pull/28)
+  - Support for callback options (e.g. if: -> ...) (thnks to [watsonjon](https://github.com/holli/auto_strip_attributes/pull/28))
 
 ## [2.4]
 
