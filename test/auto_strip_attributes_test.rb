@@ -83,6 +83,13 @@ describe AutoStripAttributes do
       @record.foo.must_equal "aaa"
     end
 
+    it "should be ok for strings arrays" do
+      @record = MockRecordBasic.new()
+      @record.foo = [" aaa \t", " "]
+      @record.valid?
+      @record.foo.must_equal ["aaa"]
+    end
+
     it "should not delete non breaking spaces" do
       @record = MockRecordBasic.new()
       @record.foo = " aaa \t\u00A0"
@@ -101,6 +108,13 @@ describe AutoStripAttributes do
     it "should set empty strings to nil" do
       @record = MockRecordBasic.new()
       @record.foo = " "
+      @record.valid?
+      @record.foo.must_be_nil
+    end
+
+    it "should set empty strings arrays to nil" do
+      @record = MockRecordBasic.new()
+      @record.foo = [" "]
       @record.valid?
       @record.foo.must_be_nil
     end
@@ -169,6 +183,29 @@ describe AutoStripAttributes do
       @record.valid?
       @record.foo.must_equal ""
     end
+
+    it "should not set blank strings arrays to nil" do
+      @record = MockRecordWithNullify.new()
+      @record.foo = [" "]
+      @record.valid?
+      @record.foo.must_equal [""]
+    end
+  end
+
+  describe "Attribute with nullify_array option" do
+    #class MockRecordWithNullifyArray < ActiveRecord::Base
+    class MockRecordWithNullifyArray < MockRecordParent
+      #column :foo, :string
+      attr_accessor :foo
+      auto_strip_attributes :foo, nullify_array: false
+    end
+
+    it "should not set blank strings array to nil" do
+      @record = MockRecordWithNullifyArray.new
+      @record.foo = ["  "]
+      @record.valid?
+      @record.foo.must_equal []
+    end
   end
 
   describe "Attribute with squish option" do
@@ -212,22 +249,31 @@ describe AutoStripAttributes do
     class MockRecordWithMultipleAttributes < MockRecordParent #< ActiveRecord::Base
       #column :foo, :string
       #column :bar, :string
-      #column :biz, :string
-      #column :bang, :integer
-      attr_accessor :foo, :bar, :biz, :bang
-      auto_strip_attributes :foo, :bar
-      auto_strip_attributes :biz, {nullify: false, squish: true}
+      #column :baz, :string
+      #column :qux, :string, array: true
+      #column :quux, :string, array: true
+      #column :quuz, :string, array: true
+      attr_accessor :foo, :bar, :baz, :qux, :quux, :quuz
+      auto_strip_attributes :foo, :bar, :qux
+      auto_strip_attributes :baz, :quux, {nullify: false, squish: true}
+      auto_strip_attributes :quuz, {nullify: true, nullify_array: false}
     end
 
     it "should handle everything ok" do
       @record = MockRecordWithMultipleAttributes.new
       @record.foo = "  foo\tfoo"
       @record.bar = "  "
-      @record.biz = "  "
+      @record.baz = "  "
+      @record.qux = ["\n"]
+      @record.quux = ["  foo\tfoo", "  "]
+      @record.quuz = [" "]
       @record.valid?
       @record.foo.must_equal "foo\tfoo"
       @record.bar.must_be_nil
-      @record.biz.must_equal ""
+      @record.baz.must_equal ""
+      @record.qux.must_be_nil
+      @record.quux.must_equal ["foo foo", ""]
+      @record.quuz.must_equal []
     end
   end
 
@@ -284,7 +330,7 @@ describe AutoStripAttributes do
     it "should have default filters set in right order" do
       AutoStripAttributes::Config.setup(clear_previous: true)
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces]
     end
 
     it "should reset filters to defaults when :clear is true" do
@@ -295,7 +341,7 @@ describe AutoStripAttributes do
       end
       AutoStripAttributes::Config.setup(clear_previous: true)
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces]
     end
 
     it "should remove all filters when :clear is true and :defaults is false" do
@@ -328,7 +374,7 @@ describe AutoStripAttributes do
       filters_order = AutoStripAttributes::Config.filters_order
       filters_enabled = AutoStripAttributes::Config.filters_enabled
 
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :squish, :delete_whitespaces, :test]
+      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces, :test]
       assert Proc === filters_block[:test]
       filters_enabled[:test].must_equal true
 
