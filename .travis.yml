@@ -2,8 +2,8 @@ language: ruby
 sudo: false
 cache: bundler
 rvm:
-  - 2.4.4
   - 2.5.1
+  - 2.6.0  
   - 2.7.0
 env:
   - "RAILS_VERSION=5.0"

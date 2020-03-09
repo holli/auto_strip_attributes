@@ -132,8 +132,6 @@ Gem has been tested with newest Ruby & Rails combination and it probably works a
 
 [<img src="https://secure.travis-ci.org/holli/auto_strip_attributes.png" />](http://travis-ci.org/holli/auto_strip_attributes)
 
-http://travis-ci.org/#!/holli/auto_strip_attributes
-
 # Support
 
 Submit suggestions or feature requests as a GitHub Issue or Pull Request. Remember to update tests. Tests are quite extensive.
