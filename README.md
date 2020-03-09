@@ -19,6 +19,8 @@ Include gem in your Gemfile:
 gem "auto_strip_attributes", "~> 2.5"
 ```
 
+Example ActiveRecord usage: 
+
 ```ruby
 class User < ActiveRecord::Base
 
@@ -34,6 +36,29 @@ class User < ActiveRecord::Base
   # Use with attributes that are not mapped to a column
   auto_strip_attributes :password, virtual: true
 end
+```
+
+Example ActiveModel usage:
+
+```ruby
+class VirtualUser
+  include ActiveModel::Validations
+  include ActiveModel::Validations::Callbacks
+
+  extend AutoStripAttributes
+
+  attr_accessor :email
+
+  # Use the `virtual` option because attributes are not mapped to a column
+  auto_strip_attributes :email, virtual: true
+end
+
+virtual_user = VirtualUser.new
+virtual_user.email = " alice@example.com "
+
+virtual_user.validate
+virtual_user.email #=> "alice@example.com"
+
 ```
 
 # Options
