@@ -1,5 +1,9 @@
 ## [Master]
 
+## [2.6]
+
+  - Support for `array` attributes (thnks to [@sharshenov](https://github.com/holli/auto_strip_attributes/pull/29))
+
 ## [2.5]
 
   - Support for callback options (e.g. if: -> ...) (thnks to [@watsonjon#28](https://github.com/holli/auto_strip_attributes/pull/28))

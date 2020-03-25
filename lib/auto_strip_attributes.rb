@@ -20,7 +20,13 @@ module AutoStripAttributes
         end
         AutoStripAttributes::Config.filters_order.each do |filter_name|
           next if !options[filter_name]
-          value = AutoStripAttributes::Config.filters[filter_name].call(value, options[filter_name])
+          filter = lambda { |original| AutoStripAttributes::Config.filters[filter_name].call(original, options[filter_name]) }
+          value = if value.respond_to?(:is_a?) && value.is_a?(Array)
+            array = value.map { |item| filter.call(item) }.compact
+            options[:nullify_array] && array.empty? ? nil : array
+          else
+            filter.call(value)
+          end
           if virtual
             record.public_send("#{attribute}=", value)
           else
@@ -59,6 +65,7 @@ class AutoStripAttributes::Config
         # Basically same as value.blank? ? nil : value
         (value.respond_to?(:'blank?') and value.respond_to?(:'empty?') and value.blank?) ? nil : value
       end
+      set_filter(nullify_array: true) {|value| value}
       set_filter(squish: false) do |value|
         value = value.respond_to?(:gsub) ? value.gsub(/[[:space:]]+/, ' ') : value
         value.respond_to?(:strip) ? value.strip : value
