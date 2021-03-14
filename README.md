@@ -121,7 +121,7 @@ end
 
 AutoStripAttributes::Config.setup accepts following options
 
-- :clear => true, to clear all filters
+- :clear_previous => true, to clear all filters
 - :defaults => true, to set three default filters mentioned above
 
 
