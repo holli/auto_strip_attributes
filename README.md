@@ -24,6 +24,8 @@ Example ActiveRecord usage:
 ```ruby
 class User < ActiveRecord::Base
 
+  extend AutoStripAttributes
+
   # Normal usage where " aaa  bbb\t " changes to "aaa  bbb"
   auto_strip_attributes :nick, :comment
 
