@@ -1,16 +1,30 @@
 language: ruby
 sudo: false
 cache: bundler
-rvm:
-  - 2.5.1
-  - 2.6.0
-  - 2.7.0
-  - 3.0.0
-  - 3.1.0
-env:
-  - "RAILS_VERSION=5.0"
-  - "RAILS_VERSION=5.1"
-  - "RAILS_VERSION=5.2"
-  - "RAILS_VERSION=6.0"
-  - "RAILS_VERSION=7.0"
+# rvm:
+#   - 2.5.1
+#   - 2.6.0
+#   - 2.7.0
+#   - 3.0.2
+#   - 3.1.2
+# env:
+#   - "RAILS_VERSION=5.0"
+#   - "RAILS_VERSION=5.1"
+#   - "RAILS_VERSION=5.2"
+#   - "RAILS_VERSION=6.0"
+#   - "RAILS_VERSION=7.0"
+jobs:
+  include:
+  - rvm: 2.5.1
+    env: RAILS_VERSION=5.0
+  - rvm: 2.5.1
+    env: RAILS_VERSION=5.1
+  - rvm: 2.5.1
+    env: RAILS_VERSION=5.2
+  - rvm: 2.7.0
+    env: RAILS_VERSION=6.0
+  - rvm: 3.0.2
+    env: RAILS_VERSION=6.0
+  - rvm: 3.1.2
+    env: RAILS_VERSION=7.0
 
