@@ -59,14 +59,14 @@ describe AutoStripAttributes do
       @record = MockRecordBasic.new()
       @record.boo = " aaa \t"
       @record.valid?
-      @record.boo.must_equal " aaa \t"
+      assert_equal @record.boo, " aaa \t"
     end
 
     it "should strip when conditional is met" do
       @record = MockRecordBasic.new()
       @record.boo = " bbb \t"
       @record.valid?
-      @record.boo.must_equal "bbb"
+      assert_equal @record.boo, "bbb"
     end
   end
 
@@ -80,28 +80,28 @@ describe AutoStripAttributes do
       @record = MockRecordBasic.new()
       @record.foo = " aaa \t"
       @record.valid?
-      @record.foo.must_equal "aaa"
+      assert_equal @record.foo, "aaa"
     end
 
     it "should be ok for strings arrays" do
       @record = MockRecordBasic.new()
       @record.foo = [" aaa \t", " "]
       @record.valid?
-      @record.foo.must_equal ["aaa"]
+      assert_equal @record.foo, ["aaa"]
     end
 
     it "should not delete non breaking spaces" do
       @record = MockRecordBasic.new()
       @record.foo = " aaa \t\u00A0"
       @record.valid?
-      @record.foo.must_equal "aaa \t\u00A0"
+      assert_equal @record.foo, "aaa \t\u00A0"
     end
 
     it "should be ok for normal strings and not squish things" do
       @record = MockRecordBasic.new()
       @record.foo = " aaa  bbb  "
       @record.valid?
-      @record.foo.must_equal "aaa  bbb"
+      assert_equal @record.foo, "aaa  bbb"
     end
 
 
@@ -109,14 +109,14 @@ describe AutoStripAttributes do
       @record = MockRecordBasic.new()
       @record.foo = " "
       @record.valid?
-      @record.foo.must_be_nil
+      assert_nil @record.foo
     end
 
     it "should set empty strings arrays to nil" do
       @record = MockRecordBasic.new()
       @record.foo = [" "]
       @record.valid?
-      @record.foo.must_be_nil
+      assert_nil @record.foo
     end
 
     it "should call strip method to attribute if possible" do
@@ -125,8 +125,7 @@ describe AutoStripAttributes do
       str_mock.expects(:strip).returns(@stripped_str="stripped_str_here")
       @record.foo = str_mock
       @record.valid?
-      assert true
-      @record.foo.must_be_same_as @stripped_str
+      assert_equal @record.foo, @stripped_str
 
       #str_mock.expect :'nil?', false
       #str_mock.expect :strip, (@stripped_str="stripped_str_here")
@@ -164,7 +163,7 @@ describe AutoStripAttributes do
       @record = MockRecordWithConvertNBSP.new()
       @record.foo = " aaa \t\u00A0"
       @record.valid?
-      @record.foo.must_equal "aaa"
+      assert_equal @record.foo, "aaa"
     end
 
   end
@@ -181,14 +180,14 @@ describe AutoStripAttributes do
       @record = MockRecordWithNullify.new
       @record.foo = "  "
       @record.valid?
-      @record.foo.must_equal ""
+      assert_equal @record.foo, ""
     end
 
     it "should not set blank strings arrays to nil" do
       @record = MockRecordWithNullify.new()
       @record.foo = [" "]
       @record.valid?
-      @record.foo.must_equal [""]
+      assert_equal @record.foo, [""]
     end
   end
 
@@ -204,7 +203,7 @@ describe AutoStripAttributes do
       @record = MockRecordWithNullifyArray.new
       @record.foo = ["  "]
       @record.valid?
-      @record.foo.must_equal []
+      assert_equal @record.foo, []
     end
   end
 
@@ -219,14 +218,14 @@ describe AutoStripAttributes do
       @record = MockRecordWithSqueeze.new
       @record.foo = "  aaa \u0009 \u000A \u000B \u000C \u000D \u0020 \u0085 \u00A0 \u1680 \u2000 \u2001 \u2002 \u2003 \u2004 \u2005 \u2006 \u2007 \u2008 \u2009 \u200A \u2028 \u2029 \u202F \u205F \u3000 bbb  \u00A0   "
       @record.valid?
-      @record.foo.must_equal "aaa bbb"
+      assert_equal @record.foo, "aaa bbb"
     end
 
     it "should do normal nullify with empty string" do
       @record = MockRecordWithSqueeze.new
       @record.foo = "  "
       @record.valid?
-      @record.foo.must_be_nil
+      assert_nil @record.foo
     end
   end
 
@@ -241,7 +240,7 @@ describe AutoStripAttributes do
       @record = MockRecordWithDelete.new
       @record.foo = " a \t  bbb"
       @record.valid?
-      @record.foo.must_equal "abbb"
+      assert_equal @record.foo, "abbb"
     end
   end
 
@@ -268,12 +267,12 @@ describe AutoStripAttributes do
       @record.quux = ["  foo\tfoo", "  "]
       @record.quuz = [" "]
       @record.valid?
-      @record.foo.must_equal "foo\tfoo"
-      @record.bar.must_be_nil
-      @record.baz.must_equal ""
-      @record.qux.must_be_nil
-      @record.quux.must_equal ["foo foo", ""]
-      @record.quuz.must_equal []
+      assert_equal @record.foo, "foo\tfoo"
+      assert_nil @record.bar
+      assert_equal @record.baz, ""
+      assert_nil @record.qux
+      assert_equal @record.quux, ["foo foo", ""]
+      assert_equal @record.quuz, []
     end
   end
 
@@ -291,9 +290,9 @@ describe AutoStripAttributes do
     it "should not call setter again in before_validation" do
       @record = MockRecordWithCustomSetter.new
       @record.foo = " foo "
-      @record.foo.must_equal " foo - foo "
+      assert_equal @record.foo, " foo - foo "
       @record.valid?
-      @record.foo.must_equal "foo - foo"
+      assert_equal @record.foo, "foo - foo"
     end
   end
 
@@ -316,9 +315,9 @@ describe AutoStripAttributes do
     it "should handle everything ok" do
       @record = MockVirtualAttribute.new
       @record.foo = "  foo  "
-      @record.foo.must_equal "  foo  "
+      assert_equal @record.foo, "  foo  "
       @record.valid?
-      @record.foo.must_equal "foo"
+      assert_equal @record.foo, "foo"
     end
   end
 
@@ -330,7 +329,7 @@ describe AutoStripAttributes do
     it "should have default filters set in right order" do
       AutoStripAttributes::Config.setup(clear_previous: true)
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces]
+      assert_equal filters_order, [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces]
     end
 
     it "should reset filters to defaults when :clear is true" do
@@ -341,7 +340,7 @@ describe AutoStripAttributes do
       end
       AutoStripAttributes::Config.setup(clear_previous: true)
       filters_order = AutoStripAttributes::Config.filters_order
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces]
+      assert_equal filters_order, [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces]
     end
 
     it "should remove all filters when :clear is true and :defaults is false" do
@@ -352,7 +351,7 @@ describe AutoStripAttributes do
       end
       AutoStripAttributes::Config.setup(clear_previous: true, defaults: false)
       filter_order = AutoStripAttributes::Config.filters_order
-      filter_order.must_equal []
+      assert_equal filter_order, []
 
       # returning to original state
       AutoStripAttributes::Config.setup(clear_previous: true)
@@ -374,14 +373,14 @@ describe AutoStripAttributes do
       filters_order = AutoStripAttributes::Config.filters_order
       filters_enabled = AutoStripAttributes::Config.filters_enabled
 
-      filters_order.must_equal [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces, :test]
+      assert_equal filters_order, [:convert_non_breaking_spaces, :strip, :nullify, :nullify_array, :squish, :delete_whitespaces, :test]
       assert Proc === filters_block[:test]
-      filters_enabled[:test].must_equal true
+      assert_equal filters_enabled[:test], true
 
       @record = MockRecordWithCustomFilter.new
       @record.foo = " FOO "
       @record.valid?
-      @record.foo.must_equal "foo"
+      assert_equal @record.foo, "foo"
 
       # returning to original state
       AutoStripAttributes::Config.setup(clear_previous: true)
@@ -411,7 +410,7 @@ describe AutoStripAttributes do
       @record = CustomOptionsMockRecord.new
       @record.foo = " abcdefghijklmnopqrstijklmn"
       @record.valid?
-      @record.foo.must_equal "abcd…"
+      assert_equal @record.foo, "abcd…"
     end
   end
 
@@ -443,21 +442,21 @@ describe AutoStripAttributes do
       @record = ComplexFirstMockRecord.new
       @record.foo = " FOO "
       @record.valid?
-      @record.foo.must_equal "FOO"
+      assert_equal @record.foo, "FOO"
     end
 
     it "should use extra filters when given" do
       @record = ComplexFirstMockRecord.new
       @record.bar_downcase = " BAR "
       @record.valid?
-      @record.bar_downcase.must_equal "bar"
+      assert_equal @record.bar_downcase, "bar"
     end
 
     it "should use extra filters when given and also respect given other configs" do
       @record = ComplexFirstMockRecord.new
       @record.bar_downcase = "    "
       @record.valid?
-      @record.bar_downcase.must_equal ""
+      assert_equal @record.bar_downcase, ""
     end
   end
 
