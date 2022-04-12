@@ -7,7 +7,7 @@ It works by adding a before_validation hook to the record. No other methods are 
 
 Gem has option to set empty strings to nil or to remove extra spaces inside the string.
 
-[![Build Status](https://travis-ci.org/holli/auto_strip_attributes.svg?branch=master)](https://travis-ci.org/holli/auto_strip_attributes)
+[![Build Status](https://travis-ci.com/holli/auto_strip_attributes.svg?branch=master)](https://app.travis-ci.com/github/holli/auto_strip_attributes/)
 [![Downloads](https://img.shields.io/gem/dt/auto_strip_attributes)](https://rubygems.org/gems/auto_strip_attributes/)
 [![Gem](https://img.shields.io/gem/v/auto_strip_attributes)](https://rubygems.org/gems/auto_strip_attributes/)
 
@@ -19,7 +19,7 @@ Include gem in your Gemfile:
 gem "auto_strip_attributes", "~> 2.6"
 ```
 
-Example ActiveRecord usage: 
+Example ActiveRecord usage:
 
 ```ruby
 class User < ActiveRecord::Base
