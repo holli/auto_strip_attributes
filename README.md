@@ -7,7 +7,6 @@ It works by adding a before_validation hook to the record. No other methods are 
 
 Gem has option to set empty strings to nil or to remove extra spaces inside the string.
 
-[![Build Status](https://travis-ci.com/holli/auto_strip_attributes.svg?branch=master)](https://app.travis-ci.com/github/holli/auto_strip_attributes/)
 [![Downloads](https://img.shields.io/gem/dt/auto_strip_attributes)](https://rubygems.org/gems/auto_strip_attributes/)
 [![Gem](https://img.shields.io/gem/v/auto_strip_attributes)](https://rubygems.org/gems/auto_strip_attributes/)
 
@@ -132,9 +131,7 @@ AutoStripAttributes::Config.setup accepts following options
 
 # Requirements
 
-Gem has been tested with newest Ruby & Rails combination and it probably works also with older versions. See test matrix at https://github.com/holli/auto_strip_attributes/blob/master/.travis.yml
-
-[![Build Status](https://travis-ci.org/holli/auto_strip_attributes.svg?branch=master)](https://travis-ci.org/holli/auto_strip_attributes)
+Gem has been tested with newest Ruby & Rails combination and it probably works also with older versions. See test matrix at https://github.com/holli/auto_strip_attributes/blob/master/.github/workflows/ci.yaml
 
 # Support
 
