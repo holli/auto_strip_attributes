@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   #s.add_development_dependency "activerecord", ">= 3.0"
   s.add_development_dependency "minitest", ">= 3.0"
-  s.add_development_dependency "mocha", "~> 0.14"
+  s.add_development_dependency "mocha", "~> 2.0"
   s.add_development_dependency 'rake'
   # s.add_development_dependency 'pry'
 
