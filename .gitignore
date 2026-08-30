@@ -1,11 +1,11 @@
 *.gem
-.bundle
+.bundle/
 Gemfile.lock
-pkg/*
+pkg/
 
 .loadpath
 .project
-.idea
+.idea/
 .redcar
 
 help
