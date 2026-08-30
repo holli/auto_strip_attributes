@@ -8,29 +8,26 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - ruby-version: '2.6.10'
-            rails-version: '6.0.0'
-          - ruby-version: '2.6.10'
-            rails-version: '6.1.0'
-          - ruby-version: '3.2'
-            rails-version: '7.0.0'
+          - { ruby-version: '3.1', rails-version: '7.1' }
+          - { ruby-version: '3.3', rails-version: '7.2' }
+          - { ruby-version: '3.3', rails-version: '8.0' }
+          - { ruby-version: '3.4', rails-version: '8.1' }
 
     env:
       RAILS_VERSION: ${{ matrix.rails-version }}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
         with:
-          bundler-cache: true
           ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
       - name: Run tests
         run: bundle exec rake
-
