@@ -61,7 +61,7 @@ class AutoStripAttributes::Config
       end
       set_filter(nullify: true) do |value|
         # We check for blank? and empty? because rails uses empty? inside blank?
-        # e.g. MiniTest::Mock.new() only responds to .blank? but not empty?, check tests for more info
+        # e.g. Minitest::Mock.new() only responds to .blank? but not empty?, check tests for more info
         # Basically same as value.blank? ? nil : value
         (value.respond_to?(:'blank?') and value.respond_to?(:'empty?') and value.blank?) ? nil : value
       end

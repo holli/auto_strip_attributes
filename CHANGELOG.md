@@ -1,5 +1,11 @@
 ## [Master]
 
+## 3.0.0 (2026-08-30)
+
+  - Dropped support for Rails < 7.1 and Ruby < 3.1
+  - Added support for Rails 7.1, 7.2, 8.0, 8.1
+  - Fixed `MiniTest::Mock` reference (removed in minitest 6) to `Minitest::Mock`
+
 ## [2.6]
 
   - Support for `array` attributes (thnks to [@sharshenov](https://github.com/holli/auto_strip_attributes/pull/29))

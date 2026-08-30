@@ -138,7 +138,7 @@ describe AutoStripAttributes do
     it "should not call strip or nullify method for non strippable attributes" do
       @record = MockRecordBasic.new()
 
-      str_mock = MiniTest::Mock.new() # answers false to str_mock.respond_to?(:strip) and respond_to?(:blank)
+      str_mock = Minitest::Mock.new() # answers false to str_mock.respond_to?(:strip) and respond_to?(:blank)
       # Mock.new is problematic in ruby 1.9 because it responds to blank? but doesn't respond to !
       # rails blank? method returns !self if an object doesn't respond to :empty?
       # Now we check in the validator also for :empty? so !self is never called.
